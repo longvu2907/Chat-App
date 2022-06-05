@@ -1,0 +1,71 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,200;8..144,400;8..144,700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  transition: color 0.1s linear, background-color 0.1s linear;
+}
+
+a {
+  text-decoration: inherit;
+  color: inherit;
+}
+
+.link {
+  font-weight: bold;
+  color: var(--link);
+  &:hover {
+    color: var(--link-hover);
+  }
+}
+
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gradient-primary);
+  border-radius: 5rem;
+}
+
+html {
+  font-family: "Roboto Flex", sans-serif;
+  font-size: 16px;
+  overflow-x: hidden;
+}
+
+:root {
+  --bg-primary: #fff;
+  --bg-secondary: #f0f2f5;
+  --text-primary: #000;
+  --text-secondary: #a8a29e;
+  --input-focus: #67e8f9;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --link: #06b6d4;
+  --link-hover: #0891b2;
+  --error-text: #dc2626;
+  --gradient-primary: linear-gradient(45deg, #cffafe, #38bdf8, #e0f2fe);
+
+  // --primary-color: #f5f5f5;
+  // --secondary-color: #eee;
+  // --primary-text-color: #030303;
+  // --secondary-text-color: #333;
+  // --hover-text-color: #fff;
+}
+
+.dark {
+  --bg-primary: #171717;
+  --bg-secondary: #262626;
+  --text-primary: #f5f5f5;
+  --text-secondary: #57534e;
+  --input-focus: #fca5a5;
+  --shadow: rgba(255, 255, 255, 0.1);
+  --link: #f43f5e;
+  --link-hover: #fb7185;
+  --gradient-primary: linear-gradient(45deg, #b65f87, #e20f0c, orange);
+
+  // --secondary-text-color: #d2d1d1;
+  // --hover-text-color: #030303;
+}

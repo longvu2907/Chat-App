@@ -1,0 +1,22 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  padding: 1.75rem;
+  border-radius: 0.75rem;
+  background-color: var(--bg-primary);
+  user-select: none;
+
+  box-shadow: 0px 2px 4px var(--shadow), 0px 8px 16px var(--shadow);
+
+  & > * {
+    width: 100%;
+  }
+
+  & > * + *,
+  form > * + * {
+    margin-top: 1rem;
+  }
+}

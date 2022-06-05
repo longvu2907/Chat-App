@@ -1,0 +1,40 @@
+.modal-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.6);
+
+  .modal {
+    position: relative;
+    max-width: 20rem;
+
+    &__description {
+      line-height: 1.25rem;
+      font-size: 0.9rem;
+      font-weight: lighter;
+      opacity: 0.9;
+      margin-bottom: 0.25rem;
+    }
+
+    &__close-btn {
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      width: auto;
+      margin: 0.75rem;
+      transition: all 0.3s;
+
+      &:hover {
+        transform: scale(1.5);
+      }
+    }
+  }
+}

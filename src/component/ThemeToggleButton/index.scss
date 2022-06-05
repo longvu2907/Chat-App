@@ -1,0 +1,43 @@
+.theme-toggle-icon {
+  cursor: pointer;
+  display: flex;
+  border-radius: 100%;
+  transition: all 0.3s;
+
+  &.move-in {
+    transform: translateY(-10px);
+    opacity: 0;
+    animation: moveIn 0.3s 0.3s linear forwards;
+  }
+
+  &.move-out {
+    animation: moveOut 0.3s linear forwards;
+  }
+
+  &:hover {
+    transform: scale(1.5);
+    box-shadow: 0 2px 4px var(--shadow);
+  }
+}
+
+@keyframes moveIn {
+  50% {
+    transform: translateY(-5px);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes moveOut {
+  50% {
+    transform: translateY(5px);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+}
