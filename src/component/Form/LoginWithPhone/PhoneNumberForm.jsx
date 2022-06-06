@@ -6,6 +6,7 @@ import Button from "../../Button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoginWithPhoneNumber } from "../../../services/firebase/LoginWithProvider";
 import * as yup from "yup";
+import { AuthError } from "../../../services/firebase/AuthError";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -15,12 +16,12 @@ const schema = yup
     phone: yup
       .string()
       .required("Phone is required")
-      .matches(phoneRegExp, "Phone number is not valid"),
+      .matches(phoneRegExp, "Phone number is invalid"),
   })
   .required();
 
 export default function PhoneNumberForm({ setConfirmation, nextFormStep }) {
-  const recaptchaWrapperRef = useRef();
+  const recaptchaWrapperRef = useRef(null);
   const {
     control,
     handleSubmit,
@@ -37,7 +38,7 @@ export default function PhoneNumberForm({ setConfirmation, nextFormStep }) {
       setConfirmation(ConfimationResult);
       nextFormStep();
     } catch (error) {
-      setError("phone", { message: error.code });
+      setError("phone", { message: AuthError[error.code] });
       recaptchaWrapperRef.current.innerHTML =
         '<div id="recaptcha-container"></div>';
     }

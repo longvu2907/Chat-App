@@ -12,12 +12,14 @@ export default function LoginPage() {
   const [isShowModal, setIsShowModal] = useState(false);
 
   return (
-    <div className='login'>
-      <div className='login__header'>
-        <h1 className='title'>Log in</h1>
-        <h2 className='content'>Connect with your friend now !</h2>
+    <div className='auth'>
+      <div className='auth__header'>
+        <h1 className='title'>Chat App</h1>
+        <p className='content'>
+          Chat App helps you connect with the people in your life.
+        </p>
       </div>
-      <Card className='login__form'>
+      <Card className='auth__form'>
         <LoginWithPassword />
         <div className='boundary'>
           <span>OR</span>

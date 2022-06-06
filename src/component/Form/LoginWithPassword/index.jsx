@@ -2,11 +2,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { AiFillEye, AiFillEyeInvisible, AiOutlineUser } from "react-icons/ai";
+import { AiFillEye, AiFillEyeInvisible, AiOutlineMail } from "react-icons/ai";
 import * as yup from "yup";
+import { AuthError } from "../../../services/firebase/AuthError";
 import { auth } from "../../../services/firebase/config";
 import Button from "../../Button";
 import Input from "../../Input";
+import ForgotPassword from "./ForgotPassword";
 
 const schema = yup
   .object()
@@ -20,40 +22,53 @@ const schema = yup
   .required();
 
 export default function LoginWithPassword() {
-  const { register, handleSubmit, formState } = useForm({
+  const [isShowModal, setIsShowModal] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm({
     resolver: yupResolver(schema),
   });
   const [showPassword, setShowPassword] = useState(false);
-  const { errors } = formState;
 
   const onSubmit = async ({ email, password }) => {
-    console.log(email, password);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const user = await signInWithEmailAndPassword(auth, email, password);
+      console.log(user);
     } catch (error) {
-      console.log(error);
+      if (error.code.includes("password"))
+        setError("password", { message: AuthError[error.code] });
+      else setError("email", { message: AuthError[error.code] });
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Input
-        name='email'
-        register={register}
-        error={errors.email}
-        placeholder='Username'
-        icon={<AiOutlineUser />}
-      />
-      <Input
-        name='password'
-        register={register}
-        error={errors.password}
-        type={showPassword ? "text" : "password"}
-        placeholder='Password'
-        icon={showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
-        onIconClick={() => setShowPassword(prev => !prev)}
-      />
-      <Button type='submit'>Login</Button>
-    </form>
+    <>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Input
+          name='email'
+          register={register}
+          error={errors.email}
+          placeholder='Email'
+          icon={<AiOutlineMail />}
+        />
+        <Input
+          name='password'
+          register={register}
+          error={errors.password}
+          type={showPassword ? "text" : "password"}
+          placeholder='Password'
+          icon={showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
+          onIconClick={() => setShowPassword(prev => !prev)}
+        />
+        <span className='forgot-password' onClick={() => setIsShowModal(true)}>
+          Forgot password
+        </span>
+        <Button type='submit'>Login</Button>
+      </form>
+      {isShowModal && <ForgotPassword setIsShowModal={setIsShowModal} />}
+    </>
   );
 }

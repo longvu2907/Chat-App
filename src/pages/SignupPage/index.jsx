@@ -1,28 +1,19 @@
 import React from "react";
-import { AiFillEye, AiFillEyeInvisible, AiOutlineUser } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import Button from "../../component/Button";
 import Card from "../../component/Card";
-import Input from "../../component/Input";
-import "./index.scss";
+import SignupWithPassword from "../../component/Form/SignupWithPassword";
 
 export default function SignupPage() {
   return (
-    <div className='signup'>
-      <div className='signup__header'>
-        <h1 className='title'>Sign up</h1>
-        <h2 className='content'>Connect with your friend now !</h2>
+    <div className='auth'>
+      <div className='auth__header'>
+        <h1 className='title'>Chat App</h1>
+        <p className='content'>
+          Chat App helps you connect with the people in your life.
+        </p>
       </div>
-      <Card className='signup__form'>
-        {/* <Input placeholder='Display Name' icon={<AiOutlineUser />} />
-        <Input placeholder='Username' icon={<AiOutlineUser />} />
-        <Input
-          password
-          placeholder='Password'
-          icon={{ show: <AiFillEye />, hide: <AiFillEyeInvisible /> }}
-        /> */}
-        <Button>Create Account</Button>
-        <Button>Signup With Google</Button>
+      <Card className='auth__form'>
+        <SignupWithPassword />
         <span>
           Already have an account?{" "}
           <Link className='link' to='/login'>

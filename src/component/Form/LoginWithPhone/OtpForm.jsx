@@ -4,6 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Button from "../../Button";
+import { AuthError } from "../../../services/firebase/AuthError";
 
 const schema = yup
   .object()
@@ -27,7 +28,7 @@ export default function OtpForm({ confirmation }) {
       const user = await confirmation.confirm(otp);
       console.log(user);
     } catch (error) {
-      setError("otp", { message: error.code });
+      setError("otp", { message: AuthError[error.code] });
     }
   };
 

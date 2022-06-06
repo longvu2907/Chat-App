@@ -1,17 +1,20 @@
-.login {
+.auth {
   display: flex;
   justify-content: space-around;
   align-items: center;
   height: 100%;
 
   &__header {
+    width: 40%;
     .title {
+      color: var(--logo);
       font-size: 4rem;
       font-weight: bold;
       margin-bottom: 1rem;
     }
     .content {
-      font-weight: normal;
+      font-size: 1.5rem;
+      font-weight: lighter;
     }
   }
   &__form {
@@ -20,6 +23,19 @@
 
     .input + .btn {
       margin-top: 2.5rem;
+    }
+    .forgot-password {
+      display: block;
+      text-align: left;
+
+      width: fit-content;
+      margin-top: 0.5rem;
+      color: var(--link);
+
+      &:hover {
+        cursor: pointer;
+        color: var(--link-hover);
+      }
     }
     .boundary {
       margin: 1.5rem 0 0.5rem;
@@ -46,6 +62,7 @@
     justify-content: unset;
 
     &__header {
+      width: 95%;
       text-align: center;
       margin: 2rem 0;
     }
