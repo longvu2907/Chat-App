@@ -4,12 +4,8 @@
 
   height: calc(100vh - 4.5rem);
   padding: 2rem 0;
+  overflow: auto;
   .container {
     height: 100%;
-  }
-
-  @media (max-width: 768px) {
-    min-height: calc(100vh - 4.5rem);
-    height: unset;
   }
 }

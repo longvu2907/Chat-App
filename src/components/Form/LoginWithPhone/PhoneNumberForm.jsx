@@ -62,6 +62,12 @@ export default function PhoneNumberForm({ setConfirmation, nextFormStep }) {
                 inputExtraProps={{ ref }}
                 country={"vn"}
                 inputClass='input'
+                inputStyle={{
+                  width: "100%",
+                  backgroundColor: "var(--bg-secondary)",
+                  color: "var(--text-primary)",
+                  border: "none",
+                }}
               />
               <p className='error-msg'>{errors.phone?.message}</p>
             </div>

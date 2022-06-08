@@ -1,7 +1,7 @@
-import React, { useContext, useEffect } from "react";
-import { Navigate, Outlet, Route, Routes, useNavigate } from "react-router-dom";
-import Container from "../component/Container";
-import Header from "../component/Header";
+import React, { useContext } from "react";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import Container from "../components/Container";
+import Header from "../components/Header";
 import { AuthContext } from "../context/AuthProvider";
 import { LoadingContext } from "../context/LoadingProvider";
 import { auth } from "../services/firebase/config";

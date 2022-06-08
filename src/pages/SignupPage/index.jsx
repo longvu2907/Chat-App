@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Card from "../../component/Card";
-import SignupWithPassword from "../../component/Form/SignupWithPassword";
+import Card from "../../components/Card";
+import SignupWithPassword from "../../components/Form/SignupWithPassword";
 
 export default function SignupPage() {
   return (

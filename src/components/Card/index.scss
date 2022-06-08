@@ -5,11 +5,9 @@
   align-items: center;
 
   padding: 1.75rem;
-  border-radius: 0.75rem;
+  border-radius: 0.5rem;
   background-color: var(--bg-primary);
-  user-select: none;
-
-  box-shadow: 0px 2px 4px var(--shadow), 0px 8px 16px var(--shadow);
+  box-shadow: 0px 2px 4px var(--shadow);
 
   & > * {
     width: 100%;

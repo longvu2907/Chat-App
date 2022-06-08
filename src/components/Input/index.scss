@@ -2,15 +2,15 @@
   position: relative;
 
   .input {
-    width: 100% !important;
+    width: 100%;
     font-size: 1rem;
     padding: 1rem;
 
-    border: none !important;
-    border-radius: 0.5rem !important;
-    background-color: var(--bg-secondary) !important;
-    color: var(--text-primary) !important;
-    transition: all 0.2s linear !important;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    transition: all 0.2s linear;
 
     &:focus {
       outline: 1px solid var(--input-focus) !important;
@@ -21,6 +21,7 @@
       color: var(--input-focus);
     }
   }
+
   .icon {
     position: absolute;
     top: 0;
@@ -29,6 +30,11 @@
     padding: 1rem;
     margin: 0;
     transition: transform 0.2s linear;
+  }
+
+  .clickable:hover {
+    cursor: pointer;
+    transform: scale(1.5);
   }
 
   .flag-dropdown {

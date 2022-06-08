@@ -7,12 +7,13 @@ export default function Input({
   error,
   onIconClick,
   register,
+  className,
   ...props
 }) {
   return (
     <div className={`input-wrapper ${error ? "invalid" : ""}`}>
       <input
-        className='input'
+        className={`input ${className}`}
         autoComplete='off'
         id={name}
         {...(register && register(name))}
@@ -20,7 +21,7 @@ export default function Input({
       />
       {icon && (
         <label htmlFor={name} onClick={onIconClick}>
-          <i className='icon'>{icon}</i>
+          <i className={`icon ${onIconClick ? "clickable" : ""}`}>{icon}</i>
         </label>
       )}
       <p className='error-msg'>{error?.message}</p>

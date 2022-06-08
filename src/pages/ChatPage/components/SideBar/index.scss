@@ -1,0 +1,26 @@
+.side-bar {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+
+  &__search {
+    background-color: var(--bg-primary) !important;
+    box-shadow: 0 2px 4px var(--shadow);
+  }
+
+  &__chat-list {
+    flex: 1;
+    margin-top: 0.5rem;
+    padding: 1rem 0.5rem;
+    overflow-y: scroll;
+
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  @media (max-width: 480px) {
+    & {
+      width: 100%;
+    }
+  }
+}

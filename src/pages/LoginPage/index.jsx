@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { AiFillGoogleCircle, AiFillPhone } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import Button from "../../component/Button";
-import Card from "../../component/Card";
-import LoginWithPassword from "../../component/Form/LoginWithPassword";
-import LoginWithPhone from "../../component/Form/LoginWithPhone";
+import Button from "../../components/Button";
+import Card from "../../components/Card";
+import LoginWithPassword from "../../components/Form/LoginWithPassword";
+import LoginWithPhone from "../../components/Form/LoginWithPhone";
 import { LoginWithGoogle } from "../../services/firebase/LoginWithProvider";
 import "./index.scss";
 

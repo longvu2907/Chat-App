@@ -1,0 +1,23 @@
+.chat-window {
+  width: 70%;
+  display: flex;
+  margin-left: 0.5rem;
+  padding: 1rem;
+
+  .message-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-start;
+
+    width: calc(100% + 2rem);
+    padding: 0.25rem 1rem;
+    overflow-y: scroll;
+  }
+
+  @media (max-width: 480px) {
+    & {
+      display: none;
+    }
+  }
+}
