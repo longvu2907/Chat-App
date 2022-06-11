@@ -10,12 +10,15 @@
 
     padding: 0.5rem 2rem;
     font-weight: 200;
+
+    @media (max-width: 480px) {
+      padding: 0.5rem;
+    }
   }
 
   &__title {
     color: var(--logo);
     font-size: 2.5rem;
-    padding: 0.25rem;
   }
   &__theme-btn {
     font-size: 1.25rem;

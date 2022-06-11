@@ -1,44 +1,15 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { AiOutlineSend } from "react-icons/ai";
+import { AiOutlineSend, AiOutlinePlusCircle } from "react-icons/ai";
 import * as yup from "yup";
 import Card from "../../../../components/Card";
 import Input from "../../../../components/Input";
+import { LoadingContext } from "../../../../context/LoadingProvider";
+import useFirestore from "../../../../hooks/useFirestore";
+import Avatar from "../Avatar";
 import Message from "../Message";
 import "./index.scss";
-
-const fakeChat = [
-  // { key: 9, sent: false, text: "haha" },
-  // { key: 8, sent: true, text: "hajaisdfa" },
-  // { key: 7, sent: true, text: "hi" },
-  // { key: 6, sent: false, text: "hi" },
-  // { key: 5, sent: false, text: "how about u" },
-  {
-    key: 4,
-    sent: true,
-    avatar: "https://placekitten.com/408/287",
-    text: "im doing great",
-  },
-  {
-    key: 3,
-    sent: false,
-    avatar: "https://placekitten.com/408/287",
-    text: "how r u",
-  },
-  {
-    key: 2,
-    sent: false,
-    avatar: "https://placekitten.com/408/287",
-    text: "hello",
-  },
-  {
-    key: 1,
-    sent: true,
-    avatar: "https://placekitten.com/408/287",
-    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione natus cumque eveniet accusantium, dolorum magni rerum? Quaerat provident, officiis eligendi quibusdam sint commodi odio rem qui saepe dolor debitis quia.",
-  },
-];
 
 const schema = yup
   .object()
@@ -47,26 +18,45 @@ const schema = yup
   })
   .required();
 
-export default function ChatWindow() {
-  const chatListRef = useRef(null);
-  const firstRender = useRef(true);
+export default function ChatWindow({ roomName, online, avatar }) {
+  const { setIsLoading } = useContext(LoadingContext);
   const { register, handleSubmit } = useForm({
     resolver: yupResolver(schema),
   });
+  const [messages, getMoreMessages] = useFirestore("messages", {
+    limitNumber: 5,
+  });
 
   const onSubmit = ({ message }) => {
-    console.log(message);
+    // setMessages(prev => [
+    //   {
+    //     key: 3,
+    //     sent: false,
+    //     avatar: "https://placekitten.com/408/287",
+    //     text: message,
+    //   },
+    //   ...prev,
+    // ]);
+    getMoreMessages();
   };
-
-  useEffect(() => {
-    firstRender.current = false;
-  }, []);
 
   return (
     <Card className='chat-window'>
-      <div className='message-list' ref={chatListRef}>
-        {fakeChat.map(message => (
-          <Message {...message} firstRender={firstRender.current} />
+      <div className='chat-window__header'>
+        <div className='header__room-info'>
+          <Avatar src={avatar} online={online} />
+          <div className='room-wrapper'>
+            <h2 className='name'>{roomName}</h2>
+            <span className='status'>{online ? "online" : "offline"}</span>
+          </div>
+        </div>
+        <div className='header__add-user'>
+          <AiOutlinePlusCircle />
+        </div>
+      </div>
+      <div className='message-list'>
+        {messages.map(message => (
+          <Message {...message} newMessage={message.newData} key={message.id} />
         ))}
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>

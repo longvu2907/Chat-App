@@ -4,6 +4,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
+  margin: 0;
 
   display: flex;
   justify-content: center;
@@ -13,9 +14,11 @@
 
   .modal {
     position: relative;
-    max-width: 20rem;
+    text-align: center;
+    min-width: 25rem;
 
     &__description {
+      max-width: 20rem;
       line-height: 1.25rem;
       font-size: 0.9rem;
       font-weight: lighter;
@@ -35,6 +38,11 @@
 
       &:hover {
         transform: scale(1.5);
+      }
+    }
+    @media (max-width: 480px) {
+      & {
+        min-width: auto;
       }
     }
   }

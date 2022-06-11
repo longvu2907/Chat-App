@@ -1,5 +1,5 @@
 import { onAuthStateChanged } from "firebase/auth";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../services/firebase/config";
 import { LoadingContext } from "../LoadingProvider";
@@ -7,31 +7,35 @@ import { LoadingContext } from "../LoadingProvider";
 export const AuthContext = createContext();
 
 function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [authState, setAuthState] = useState({
+    isSignedIn: false,
+    pending: true,
+    user: null,
+  });
   const { setIsLoading } = useContext(LoadingContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoading(true);
+
     const unsubcribeAuth = onAuthStateChanged(auth, user => {
       if (user) {
-        setUser(user);
-        setIsLoading(false);
-
+        setAuthState({ isSignedIn: true, pending: false, user });
         navigate("/");
-        return;
-      }
+      } else setAuthState({ isSignedIn: false, pending: false, user });
 
-      setUser(null);
       setIsLoading(false);
     });
+
     return () => {
       unsubcribeAuth();
     };
   }, [navigate, setIsLoading]);
 
   return (
-    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ authState }}>
+      {children}
+    </AuthContext.Provider>
   );
 }
 

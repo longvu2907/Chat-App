@@ -5,12 +5,17 @@ import "./index.scss";
 
 export default function Modal({ setIsShowModal, children }) {
   return (
-    <div className='modal-wrapper' onClick={() => setIsShowModal(false)}>
+    <div
+      className='modal-wrapper'
+      onClick={() => setIsShowModal && setIsShowModal(false)}
+    >
       <Card className='modal' onClick={e => e.stopPropagation()}>
-        <AiOutlineClose
-          className='modal__close-btn'
-          onClick={() => setIsShowModal(false)}
-        />
+        {setIsShowModal && (
+          <AiOutlineClose
+            className='modal__close-btn'
+            onClick={() => setIsShowModal(false)}
+          />
+        )}
         {children}
       </Card>
     </div>

@@ -2,8 +2,7 @@ import React, { useEffect, useRef } from "react";
 import Avatar from "../Avatar";
 import "./index.scss";
 
-export default function Message({ avatar, sent, firstRender, text }) {
-  const isFirstRender = useRef(firstRender);
+export default function Message({ avatar, sent, newMessage, text }) {
   const messageRef = useRef(null);
 
   useEffect(() => {
@@ -48,9 +47,7 @@ export default function Message({ avatar, sent, firstRender, text }) {
       ref={messageRef}
     >
       <div className='message__avatar'>{!sent && <Avatar src={avatar} />}</div>
-      <div
-        className={`message__text ${isFirstRender.current ? "" : "slide-up"}`}
-      >
+      <div className={`message__text ${newMessage ? "slide-up" : ""}`}>
         <p>{text}</p>
       </div>
     </div>

@@ -4,20 +4,29 @@ import {
   signInWithPhoneNumber,
   signInWithPopup,
 } from "firebase/auth";
+import getUserData from "../../utils/getUserData";
+import addDocument from "./addDocument";
 import { auth } from "./config";
 
 const provider = new GoogleAuthProvider();
 auth.useDeviceLanguage();
 
-const LoginWithGoogle = async () => {
+const loginWithGoogle = async () => {
   try {
-    await signInWithPopup(auth, provider);
+    const {
+      _tokenResponse: { isNewUser },
+      user,
+    } = await signInWithPopup(auth, provider);
+
+    if (isNewUser) {
+      await addDocument("users", getUserData(user), user.uid);
+    }
   } catch (error) {
     console.log(error);
   }
 };
 
-const LoginWithPhoneNumber = async phoneNumber => {
+const loginWithPhoneNumber = async phoneNumber => {
   const appVerifier = new RecaptchaVerifier(
     "recaptcha-container",
     { size: "invisible" },
@@ -38,4 +47,19 @@ const LoginWithPhoneNumber = async phoneNumber => {
   }
 };
 
-export { LoginWithGoogle, LoginWithPhoneNumber };
+const verifyOtp = async (confirmation, otp) => {
+  try {
+    const {
+      _tokenResponse: { isNewUser },
+      user,
+    } = await confirmation.confirm(otp);
+
+    if (isNewUser) {
+      addDocument("users", getUserData(user), user.uid);
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export { loginWithGoogle, loginWithPhoneNumber, verifyOtp };

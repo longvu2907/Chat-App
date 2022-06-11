@@ -1,45 +1,36 @@
 import React, { useState } from "react";
 import { AiFillGoogleCircle, AiFillPhone } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import AuthLayout from "../../components/AuthLayout";
 import Button from "../../components/Button";
-import Card from "../../components/Card";
 import LoginWithPassword from "../../components/Form/LoginWithPassword";
 import LoginWithPhone from "../../components/Form/LoginWithPhone";
-import { LoginWithGoogle } from "../../services/firebase/LoginWithProvider";
-import "./index.scss";
+import { loginWithGoogle } from "../../services/firebase/LoginWithProvider";
 
 export default function LoginPage() {
   const [isShowModal, setIsShowModal] = useState(false);
 
   return (
-    <div className='auth'>
-      <div className='auth__header'>
-        <h1 className='title'>Chat App</h1>
-        <p className='content'>
-          Chat App helps you connect with the people in your life.
-        </p>
+    <AuthLayout>
+      <LoginWithPassword />
+      <div className='boundary'>
+        <span>OR</span>
       </div>
-      <Card className='auth__form'>
-        <LoginWithPassword />
-        <div className='boundary'>
-          <span>OR</span>
-        </div>
-        <Button onClick={LoginWithGoogle}>
-          <AiFillGoogleCircle />
-          Login With Google
-        </Button>
-        <Button onClick={() => setIsShowModal(true)}>
-          <AiFillPhone />
-          Login With Phone Number
-        </Button>
-        <span>
-          Don't have an account?{" "}
-          <Link className='link' to='/signup'>
-            Register
-          </Link>
-        </span>
-      </Card>
+      <Button onClick={loginWithGoogle}>
+        <AiFillGoogleCircle />
+        Login With Google
+      </Button>
+      <Button onClick={() => setIsShowModal(true)}>
+        <AiFillPhone />
+        Login With Phone Number
+      </Button>
+      <span>
+        Don't have an account?{" "}
+        <Link className='link' to='/signup'>
+          Register
+        </Link>
+      </span>
       {isShowModal && <LoginWithPhone setIsShowModal={setIsShowModal} />}
-    </div>
+    </AuthLayout>
   );
 }

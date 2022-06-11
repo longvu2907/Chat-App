@@ -4,7 +4,7 @@ import "./index.scss";
 export default function Avatar({ online, ...props }) {
   return (
     <div className='avatar'>
-      <img {...props} alt='avatar' online />
+      <img {...props} alt='avatar' />
       {online && <div className='status'></div>}
     </div>
   );

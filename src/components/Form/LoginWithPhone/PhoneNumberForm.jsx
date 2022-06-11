@@ -1,12 +1,14 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useRef } from "react";
+import { useContext } from "react";
 import { Controller, useForm } from "react-hook-form";
 import ReactPhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/bootstrap.css";
-import Button from "../../Button";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { LoginWithPhoneNumber } from "../../../services/firebase/LoginWithProvider";
 import * as yup from "yup";
+import { LoadingContext } from "../../../context/LoadingProvider";
 import { AuthError } from "../../../services/firebase/AuthError";
+import { loginWithPhoneNumber } from "../../../services/firebase/LoginWithProvider";
+import Button from "../../Button";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -30,18 +32,20 @@ export default function PhoneNumberForm({ setConfirmation, nextFormStep }) {
   } = useForm({
     resolver: yupResolver(schema),
   });
+  const { setIsLoading } = useContext(LoadingContext);
 
   const onSubmit = async ({ phone }) => {
-    console.log(phone);
+    setIsLoading(true);
     try {
-      const ConfimationResult = await LoginWithPhoneNumber("+" + phone);
-      setConfirmation(ConfimationResult);
+      const confirmation = await loginWithPhoneNumber("+" + phone);
+      setConfirmation(confirmation);
       nextFormStep();
     } catch (error) {
       setError("phone", { message: AuthError[error.code] });
       recaptchaWrapperRef.current.innerHTML =
         '<div id="recaptcha-container"></div>';
     }
+    setIsLoading(false);
   };
 
   return (

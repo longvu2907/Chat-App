@@ -1,9 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiFillEye, AiFillEyeInvisible, AiOutlineMail } from "react-icons/ai";
 import * as yup from "yup";
+import { LoadingContext } from "../../../context/LoadingProvider";
 import { AuthError } from "../../../services/firebase/AuthError";
 import { auth } from "../../../services/firebase/config";
 import Button from "../../Button";
@@ -32,8 +33,10 @@ export default function LoginWithPassword() {
     resolver: yupResolver(schema),
   });
   const [showPassword, setShowPassword] = useState(false);
+  const { setIsLoading } = useContext(LoadingContext);
 
   const onSubmit = async ({ email, password }) => {
+    setIsLoading(true);
     try {
       const user = await signInWithEmailAndPassword(auth, email, password);
       console.log(user);
@@ -42,6 +45,7 @@ export default function LoginWithPassword() {
         setError("password", { message: AuthError[error.code] });
       else setError("email", { message: AuthError[error.code] });
     }
+    setIsLoading(false);
   };
 
   return (
@@ -64,7 +68,7 @@ export default function LoginWithPassword() {
           onIconClick={() => setShowPassword(prev => !prev)}
         />
         <span className='forgot-password' onClick={() => setIsShowModal(true)}>
-          Forgot password
+          Forgotten password ?
         </span>
         <Button type='submit'>Login</Button>
       </form>

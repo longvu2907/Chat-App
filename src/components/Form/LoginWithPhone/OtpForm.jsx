@@ -1,10 +1,12 @@
-import React from "react";
-import OtpInput from "react-otp-input";
-import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useContext } from "react";
+import { Controller, useForm } from "react-hook-form";
+import OtpInput from "react-otp-input";
 import * as yup from "yup";
-import Button from "../../Button";
+import { LoadingContext } from "../../../context/LoadingProvider";
 import { AuthError } from "../../../services/firebase/AuthError";
+import { verifyOtp } from "../../../services/firebase/LoginWithProvider";
+import Button from "../../Button";
 
 const schema = yup
   .object()
@@ -22,14 +24,16 @@ export default function OtpForm({ confirmation }) {
   } = useForm({
     resolver: yupResolver(schema),
   });
+  const { setIsLoading } = useContext(LoadingContext);
 
   const onSubmit = async ({ otp }) => {
+    setIsLoading(true);
     try {
-      const user = await confirmation.confirm(otp);
-      console.log(user);
+      await verifyOtp(confirmation, otp);
     } catch (error) {
       setError("otp", { message: AuthError[error.code] });
     }
+    setIsLoading(false);
   };
 
   return (
@@ -45,6 +49,7 @@ export default function OtpForm({ confirmation }) {
             <div className={`input-wrapper ${errors.otp ? "invalid" : ""}`}>
               <OtpInput
                 {...field}
+                shouldAutoFocus={true}
                 numInputs={6}
                 separator={<span>-</span>}
                 containerStyle={{ justifyContent: "center" }}

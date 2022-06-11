@@ -1,0 +1,66 @@
+.gender-input {
+  display: flex;
+  align-items: center;
+  opacity: 0.75;
+
+  input {
+    display: none;
+  }
+
+  span {
+    margin-right: 1.5rem;
+  }
+
+  ul {
+    display: flex;
+    align-items: center;
+    li {
+      display: flex;
+      align-items: center;
+      position: relative;
+      width: 5rem;
+      height: 2rem;
+      list-style: none;
+      user-select: none;
+
+      label {
+        width: 100%;
+        padding: 0.4rem 2rem;
+      }
+
+      input[type="radio"]:checked ~ label {
+        color: var(--active);
+      }
+
+      input[type="radio"]:checked ~ .check {
+        background-color: var(--active);
+      }
+
+      .check {
+        position: absolute;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 100%;
+        background-color: var(--bg-secondary);
+        z-index: -1;
+
+        &::before {
+          content: "";
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+
+          border-radius: 100%;
+          width: 0.65rem;
+          height: 0.65rem;
+          border: 0.25rem solid var(--bg-primary);
+          transform: translate(15%, 15%);
+        }
+      }
+    }
+    li + li {
+      margin-left: 0.5rem;
+    }
+  }
+}

@@ -24,12 +24,12 @@
   }
   &__text {
     max-width: 80%;
-    margin-top: 0.35rem;
+    margin-top: 0.25rem;
     padding: 0.5rem 0.75rem;
     word-wrap: break-word;
 
     &.slide-up {
-      animation: slideUp 0.5s linear forwards;
+      animation: slideUp 0.3s linear;
     }
   }
   &--sent {
@@ -38,7 +38,7 @@
     .message__text {
       background-color: var(--bg-primary);
       outline: 1.5px solid var(--bg-secondary);
-      border-radius: 1rem 0.3rem 0.3rem 1rem;
+      border-radius: 1rem 0.1rem 0.1rem 1rem;
       box-shadow: 2px 2px 2px var(--shadow);
     }
 
@@ -58,7 +58,7 @@
   &--received {
     .message__text {
       background-color: var(--bg-secondary);
-      border-radius: 0.3rem 1rem 1rem 0.3rem;
+      border-radius: 0.1rem 1rem 1rem 0.1rem;
       box-shadow: -2px 2px 2px var(--shadow);
     }
 

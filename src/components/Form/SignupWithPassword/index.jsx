@@ -1,11 +1,14 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import React, { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { AiFillEye, AiFillEyeInvisible, AiOutlineUser } from "react-icons/ai";
+import { AiFillEye, AiFillEyeInvisible, AiOutlineMail } from "react-icons/ai";
 import * as yup from "yup";
+import { LoadingContext } from "../../../context/LoadingProvider";
+import addDocument from "../../../services/firebase/addDocument";
 import { AuthError } from "../../../services/firebase/AuthError";
 import { auth } from "../../../services/firebase/config";
+import getUserData from "../../../utils/getUserData";
 import Button from "../../Button";
 import Input from "../../Input";
 
@@ -34,14 +37,22 @@ export default function SignupWithPassword() {
     resolver: yupResolver(schema),
   });
   const [showPassword, setShowPassword] = useState(false);
+  const { setIsLoading } = useContext(LoadingContext);
 
   const onSubmit = async ({ email, password }) => {
+    setIsLoading(true);
     try {
-      const user = await createUserWithEmailAndPassword(auth, email, password);
-      console.log(user);
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+
+      await addDocument("users", getUserData(user), user.uid);
     } catch (error) {
       setError("email", { message: AuthError[error.code] });
     }
+    setIsLoading(false);
   };
 
   return (
@@ -50,8 +61,8 @@ export default function SignupWithPassword() {
         name='email'
         register={register}
         error={errors.email}
-        placeholder='Username'
-        icon={<AiOutlineUser />}
+        placeholder='Email'
+        icon={<AiOutlineMail />}
       />
       <Input
         name='password'

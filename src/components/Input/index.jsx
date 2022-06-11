@@ -14,7 +14,6 @@ export default function Input({
     <div className={`input-wrapper ${error ? "invalid" : ""}`}>
       <input
         className={`input ${className}`}
-        autoComplete='off'
         id={name}
         {...(register && register(name))}
         {...props}

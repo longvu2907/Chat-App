@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import LoadingBar from "react-top-loading-bar";
 import { AuthContext } from "../../context/AuthProvider";
@@ -10,7 +10,9 @@ import "./index.scss";
 
 export default function Header() {
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const { user } = useContext(AuthContext);
+  const {
+    authState: { isSignedIn, pending },
+  } = useContext(AuthContext);
   const loadingBarRef = useRef(null);
   const { isLoading } = useContext(LoadingContext);
 
@@ -31,20 +33,20 @@ export default function Header() {
           toggleTheme={toggleTheme}
         />
         <div className='header__auth'>
-          {!isLoading && user ? (
-            <Link to='/signout'>Sign out</Link>
-          ) : (
-            <>
-              <Link to='/login'>Log in</Link>
-              <Link to='/signup'>Sign Up</Link>
-            </>
-          )}
+          {!pending &&
+            (isSignedIn ? (
+              <Link to='/signout'>Sign out</Link>
+            ) : (
+              <>
+                <Link to='/login'>Log in</Link>
+                <Link to='/signup'>Sign Up</Link>
+              </>
+            ))}
         </div>
       </Container>
       <LoadingBar
         ref={loadingBarRef}
-        containerStyle={{ top: "4.5rem" }}
-        style={{ height: "3px", background: "var(--logo)" }}
+        style={{ height: "2px", background: "var(--logo)" }}
         shadow={false}
       />
     </header>
