@@ -24,5 +24,5 @@ export default async function addDocument(collectionName, data, docID = null) {
   }
 
   const collectionRef = collection(db, collectionName);
-  await addDoc(collectionRef, docData);
+  return await addDoc(collectionRef, docData);
 }

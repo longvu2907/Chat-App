@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { sendPasswordResetEmail } from "firebase/auth";
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineMail } from "react-icons/ai";
 import * as yup from "yup";
@@ -18,7 +18,7 @@ const schema = yup
   })
   .required();
 
-export default function ForgotPassword(props) {
+export default function ForgotPassword({ setShowModal, ...props }) {
   const {
     register,
     handleSubmit,
@@ -28,7 +28,6 @@ export default function ForgotPassword(props) {
     resolver: yupResolver(schema),
   });
   const [passwordSent, setPasswordSent] = useState(false);
-  const { setIsShowModal } = props;
   const { setIsLoading } = useContext(LoadingContext);
 
   const onSubmit = async ({ email }) => {
@@ -47,7 +46,7 @@ export default function ForgotPassword(props) {
       {passwordSent ? (
         <>
           <h2 className='modal__header'>Password reset email sent</h2>
-          <Button onClick={() => setIsShowModal(false)}>Done</Button>
+          <Button onClick={() => setShowModal(false)}>Done</Button>
         </>
       ) : (
         <>

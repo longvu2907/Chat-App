@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "react-phone-input-2/lib/bootstrap.css";
 import Button from "../../Button";
 import Modal from "../../Modal";

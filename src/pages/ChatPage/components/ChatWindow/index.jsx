@@ -23,7 +23,7 @@ export default function ChatWindow({ roomName, online, avatar }) {
   const { register, handleSubmit } = useForm({
     resolver: yupResolver(schema),
   });
-  const [messages, getMoreMessages] = useFirestore("messages", {
+  const [messages, loadMessages] = useFirestore("messages", {
     limitNumber: 5,
   });
 
@@ -37,7 +37,7 @@ export default function ChatWindow({ roomName, online, avatar }) {
     //   },
     //   ...prev,
     // ]);
-    getMoreMessages();
+    loadMessages();
   };
 
   return (

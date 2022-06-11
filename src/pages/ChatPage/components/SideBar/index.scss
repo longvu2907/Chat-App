@@ -4,8 +4,8 @@
   flex-direction: column;
 
   &__search {
-    background-color: var(--bg-primary) !important;
     border-radius: 0.5rem 0.2rem 0.2rem 0.2rem !important;
+    background-color: var(--bg-primary) !important;
     box-shadow: 0 2px 4px var(--shadow);
   }
 
@@ -18,6 +18,10 @@
     display: flex;
     justify-content: flex-start;
     overflow-y: scroll;
+    .create-room {
+      margin: 0;
+      padding: 0.5rem 1rem;
+    }
   }
 
   @media (max-width: 480px) {

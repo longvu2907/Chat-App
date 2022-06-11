@@ -1,6 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useRef } from "react";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import ReactPhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/bootstrap.css";

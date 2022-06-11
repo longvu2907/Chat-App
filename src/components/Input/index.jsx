@@ -1,4 +1,3 @@
-import React from "react";
 import "./index.scss";
 
 export default function Input({
@@ -12,17 +11,21 @@ export default function Input({
 }) {
   return (
     <div className={`input-wrapper ${error ? "invalid" : ""}`}>
-      <input
-        className={`input ${className}`}
-        id={name}
-        {...(register && register(name))}
-        {...props}
-      />
-      {icon && (
-        <label htmlFor={name} onClick={onIconClick}>
-          <i className={`icon ${onIconClick ? "clickable" : ""}`}>{icon}</i>
-        </label>
-      )}
+      <label>
+        <input
+          className={`input ${className ? className : ""}`}
+          {...(register && register(name))}
+          {...props}
+        />
+        {icon && (
+          <i
+            className={`icon ${onIconClick ? "clickable" : ""}`}
+            onClick={onIconClick}
+          >
+            {icon}
+          </i>
+        )}
+      </label>
       <p className='error-msg'>{error?.message}</p>
     </div>
   );

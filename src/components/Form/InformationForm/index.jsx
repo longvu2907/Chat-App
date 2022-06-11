@@ -9,6 +9,7 @@ import { LoadingContext } from "../../../context/LoadingProvider";
 import addDocument from "../../../services/firebase/addDocument";
 import { AuthError } from "../../../services/firebase/AuthError";
 import { auth } from "../../../services/firebase/config";
+import getUserData from "../../../utils/getUserData";
 import Button from "../../Button";
 import GenderSelect from "../../GenderSelect";
 import Input from "../../Input";
@@ -22,7 +23,7 @@ const schema = yup
   })
   .required();
 
-export default function InformationForm({ setIsShowModal }) {
+export default function InformationForm({ setShowModal }) {
   const {
     register,
     handleSubmit,
@@ -42,17 +43,9 @@ export default function InformationForm({ setIsShowModal }) {
         gender,
       });
 
-      await addDocument(
-        "users",
-        {
-          displayName: user.displayName,
-          photoURL: user.photoURL,
-          gender,
-        },
-        user.uid,
-      );
+      await addDocument("users", getUserData(user), user.uid);
 
-      setIsShowModal(false);
+      setShowModal(false);
     } catch (error) {
       console.log(error);
       setError("displayName", { message: AuthError[error.code] });

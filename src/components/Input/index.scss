@@ -10,13 +10,12 @@
     border-radius: 0.5rem;
     background-color: var(--bg-secondary);
     color: var(--text-primary);
-    transition: all 0.2s linear;
 
     &:focus {
       outline: 1px solid var(--input-focus) !important;
       box-shadow: 0 0 5px var(--input-focus) !important;
     }
-    &:focus ~ label .icon {
+    &:focus ~ .icon {
       transform: scale(1.5);
       color: var(--input-focus);
     }
@@ -29,7 +28,7 @@
     width: auto;
     padding: 1rem;
     margin: 0;
-    transition: transform 0.2s linear;
+    transition: transform 0.2s linear !important;
   }
 
   .clickable:hover {

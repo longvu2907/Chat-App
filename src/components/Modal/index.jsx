@@ -3,17 +3,17 @@ import { AiOutlineClose } from "react-icons/ai";
 import Card from "../Card";
 import "./index.scss";
 
-export default function Modal({ setIsShowModal, children }) {
+export default function Modal({ setShowModal, children }) {
   return (
     <div
       className='modal-wrapper'
-      onClick={() => setIsShowModal && setIsShowModal(false)}
+      onMouseDown={() => setShowModal && setShowModal(false)}
     >
-      <Card className='modal' onClick={e => e.stopPropagation()}>
-        {setIsShowModal && (
+      <Card className='modal' onMouseDown={e => e.stopPropagation()}>
+        {setShowModal && (
           <AiOutlineClose
             className='modal__close-btn'
-            onClick={() => setIsShowModal(false)}
+            onClick={() => setShowModal(false)}
           />
         )}
         {children}

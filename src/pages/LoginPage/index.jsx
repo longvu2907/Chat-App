@@ -8,7 +8,7 @@ import LoginWithPhone from "../../components/Form/LoginWithPhone";
 import { loginWithGoogle } from "../../services/firebase/LoginWithProvider";
 
 export default function LoginPage() {
-  const [isShowModal, setIsShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <AuthLayout>
@@ -20,7 +20,7 @@ export default function LoginPage() {
         <AiFillGoogleCircle />
         Login With Google
       </Button>
-      <Button onClick={() => setIsShowModal(true)}>
+      <Button onClick={() => setShowModal(true)}>
         <AiFillPhone />
         Login With Phone Number
       </Button>
@@ -30,7 +30,7 @@ export default function LoginPage() {
           Register
         </Link>
       </span>
-      {isShowModal && <LoginWithPhone setIsShowModal={setIsShowModal} />}
+      {showModal && <LoginWithPhone setShowModal={setShowModal} />}
     </AuthLayout>
   );
 }

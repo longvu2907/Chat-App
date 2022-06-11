@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiFillEye, AiFillEyeInvisible, AiOutlineMail } from "react-icons/ai";
 import * as yup from "yup";
@@ -23,7 +23,7 @@ const schema = yup
   .required();
 
 export default function LoginWithPassword() {
-  const [isShowModal, setIsShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const {
     register,
     handleSubmit,
@@ -67,12 +67,12 @@ export default function LoginWithPassword() {
           icon={showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
           onIconClick={() => setShowPassword(prev => !prev)}
         />
-        <span className='forgot-password' onClick={() => setIsShowModal(true)}>
+        <span className='forgot-password' onClick={() => setShowModal(true)}>
           Forgotten password ?
         </span>
         <Button type='submit'>Login</Button>
       </form>
-      {isShowModal && <ForgotPassword setIsShowModal={setIsShowModal} />}
+      {showModal && <ForgotPassword setShowModal={setShowModal} />}
     </>
   );
 }

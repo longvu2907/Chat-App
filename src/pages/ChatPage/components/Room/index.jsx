@@ -1,9 +1,8 @@
-import React from "react";
 import Avatar from "../Avatar";
 import "./index.scss";
 
 export default function Room({
-  roomAvatar,
+  photoURL,
   roomName,
   lastMessage,
   lastMessageTime,
@@ -14,7 +13,7 @@ export default function Room({
   return (
     <div className={`room ${active ? "active" : ""}`} {...props}>
       <div className='room__avatar'>
-        <Avatar src={roomAvatar} online />
+        <Avatar src={photoURL} online />
       </div>
       <div className={`room__wrapper ${unread ? "room__wrapper--unread" : ""}`}>
         <h2 className='name'>{roomName}</h2>
