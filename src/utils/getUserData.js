@@ -1,4 +1,4 @@
-import unicodeNormalizer from "./unicodeNormalizer";
+import generateSearchKey from "./generateSearchKey";
 
 export default function getUserData({
   displayName,
@@ -13,6 +13,6 @@ export default function getUserData({
     phoneNumber,
     photoURL,
     uid,
-    searchName: unicodeNormalizer(displayName),
+    searchKey: generateSearchKey(displayName),
   };
 }

@@ -14,7 +14,7 @@ export default function SideBar() {
       <SearchUser
         className='side-bar__search'
         searchCollection='users'
-        searchField='searchName'
+        searchField='searchKey'
       />
       <Card className='side-bar__chat-list'>
         {/* {roomList.map((room, index) => (

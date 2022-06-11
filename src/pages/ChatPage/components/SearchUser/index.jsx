@@ -1,18 +1,8 @@
-import {
-  collection,
-  endAt,
-  getDocs,
-  orderBy,
-  query,
-  startAt,
-} from "firebase/firestore";
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineSearch } from "react-icons/ai";
 import Input from "../../../../components/Input";
-import { AuthContext } from "../../../../context/AuthProvider";
-import { LoadingContext } from "../../../../context/LoadingProvider";
-import { db } from "../../../../services/firebase/config";
+import useFirestore from "../../../../hooks/useFirestore";
 import unicodeNormalizer from "../../../../utils/unicodeNormalizer";
 import Avatar from "../Avatar";
 import "./index.scss";
@@ -26,50 +16,34 @@ export default function SearchUser({
   members,
   ...props
 }) {
-  const { setIsLoading } = useContext(LoadingContext);
   const [showResult, setShowResult] = useState(false);
-  const [results, setResults] = useState([]);
-  const { register, watch } = useForm();
-  const watchSearch = watch("search", "");
+  const [searchKey, setSearchKey] = useState("");
   const wrapperRef = useRef(null);
-  const {
-    authState: { user },
-  } = useContext(AuthContext);
-  console.log(members);
+  const { register, watch } = useForm();
+  const watchSearch = watch("search");
 
-  const onSearch = useMemo(
-    () => async queryText => {
-      setIsLoading(true);
-      queryText = unicodeNormalizer(queryText);
-
-      const q = query(
-        collection(db, searchCollection),
-        orderBy(searchField),
-        startAt(queryText),
-        endAt(queryText + "\uf8ff"),
-      );
-      const docs = await getDocs(q);
-      const data = [];
-      docs.forEach(doc => data.push(doc.data()));
-
-      setResults(data.filter(value => value.uid !== user.uid));
-      setIsLoading(false);
-    },
-    [searchCollection, searchField, setIsLoading, user],
+  const condition = useMemo(
+    () => ({
+      fieldName: searchField,
+      operator: "array-contains",
+      compareValue: searchKey,
+    }),
+    [searchField, searchKey],
   );
 
-  useEffect(() => {
-    if (watchSearch === "") {
-      setResults([]);
-      return;
-    }
+  const [results, loadMoreResults] = useFirestore(searchCollection, {
+    condition,
+  });
 
+  useEffect(() => {
     const searchDebounce = setTimeout(() => {
-      onSearch(watchSearch);
+      setSearchKey(unicodeNormalizer(watchSearch));
     }, 500);
 
-    return () => clearTimeout(searchDebounce);
-  }, [watchSearch, onSearch]);
+    return () => {
+      clearTimeout(searchDebounce);
+    };
+  }, [results, watchSearch]);
 
   useEffect(() => {
     //Click out side search-wrapper
@@ -91,12 +65,12 @@ export default function SearchUser({
       ref={wrapperRef}
     >
       <Input
-        placeholder={placeholder || "Search"}
         name='search'
+        register={register}
+        placeholder={placeholder || "Search"}
         autoComplete='off'
         icon={<AiOutlineSearch />}
-        onIconClick={() => onSearch(watchSearch)}
-        register={register}
+        onIconClick={() => {}}
         onFocus={() => setShowResult(true)}
         {...props}
       />

@@ -22,7 +22,7 @@ export default function useFirestore(
     limitNumber = 25,
   } = {},
 ) {
-  const firstGetData = useRef(true);
+  const getOldData = useRef(true);
   const [documents, setDocuments] = useState([]);
   const { setIsLoading } = useContext(LoadingContext);
 
@@ -57,6 +57,7 @@ export default function useFirestore(
 
   useEffect(() => {
     setIsLoading(true);
+    getOldData.current = true;
 
     let q = query(
       collection(db, collectionName),
@@ -79,7 +80,7 @@ export default function useFirestore(
       snapshot.docChanges().forEach(change => {
         const data = {
           ...change.doc.data(),
-          newData: !firstGetData.current,
+          newData: !getOldData.current,
           id: change.doc.id,
           relativeTime: getRelativeTime(change.doc.data().createdAt.toDate()),
         };
@@ -99,8 +100,10 @@ export default function useFirestore(
         }
       });
 
-      firstGetData.current = false;
-      setDocuments(prev => [...datas, ...prev]);
+      if (getOldData.current) setDocuments(datas);
+      else setDocuments(prev => [...datas, ...prev]);
+
+      getOldData.current = false;
     });
 
     setIsLoading(false);
