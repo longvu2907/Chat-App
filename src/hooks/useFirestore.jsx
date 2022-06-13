@@ -60,7 +60,7 @@ export default function useFirestore(
 
           if (change.type === "removed") {
             setDocuments(prev =>
-              prev.map(prevData => prevData.id !== change.doc.id),
+              prev.filter(prevData => prevData.id !== change.doc.id),
             );
           }
         });

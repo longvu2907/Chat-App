@@ -2,7 +2,6 @@
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 0.2rem 0;
   position: relative;
 
   &.first {
@@ -14,6 +13,13 @@
         border-radius: 100%;
       }
     }
+  }
+  &__name {
+    position: absolute;
+    top: 0;
+    opacity: 0;
+    font-size: 0.7rem;
+    transform: translate(2.5rem, -80%);
   }
   &__avatar {
     width: 2rem;
@@ -40,11 +46,15 @@
     opacity: 0;
     bottom: 0;
     font-size: 0.65rem;
-    transform: translateY(100%);
+    transform: translateY(125%);
   }
 
   &--sent {
     justify-content: end;
+
+    .message__name {
+      display: none;
+    }
 
     .message__text {
       background-color: var(--bg-primary);
@@ -54,12 +64,14 @@
     }
 
     &.first {
+      margin-top: 0.5rem;
       .message__text {
         border-bottom-right-radius: 1rem;
       }
     }
 
     &.last {
+      margin-bottom: 0.5rem;
       .message__text {
         border-top-right-radius: 1rem;
       }
@@ -89,6 +101,7 @@
   &--initial {
     justify-content: center;
     flex-direction: column;
+    margin: 2rem 0;
     .message__time {
       position: relative;
       transform: none;
@@ -102,6 +115,9 @@
     }
   }
   &.last {
+    .message__name {
+      opacity: 0.8;
+    }
   }
   &.first {
     .message__time {

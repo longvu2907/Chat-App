@@ -71,6 +71,7 @@ export default function CreateRoomModal({ setShowModal, ...props }) {
           name='roomName'
           register={register}
           error={errors.roomName}
+          autoComplete='off'
         />
         <SearchUser
           searchCollection='users'

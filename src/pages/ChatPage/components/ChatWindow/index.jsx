@@ -1,13 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useMemo } from "react";
 import { useForm } from "react-hook-form";
-import {
-  AiOutlineArrowLeft,
-  AiOutlinePlusCircle,
-  AiOutlineSend,
-  AiOutlineUsergroupAdd,
-  AiOutlineUsergroupDelete,
-} from "react-icons/ai";
+import { AiOutlineArrowLeft, AiOutlineSend } from "react-icons/ai";
 import * as yup from "yup";
 import Avatar from "../../../../components/Avatar";
 import Card from "../../../../components/Card";
@@ -15,16 +9,14 @@ import Input from "../../../../components/Input";
 import { AuthContext } from "../../../../context/AuthProvider";
 import useFirestore from "../../../../hooks/useFirestore";
 import addDocument from "../../../../services/firebase/addDocument";
-import getDocuments from "../../../../services/firebase/getDocuments";
-import SearchUser from "../SearchUser";
 import "./index.scss";
+import ManageMember from "./ManageMember";
 import MessageList from "./MessageList";
 
 const schema = yup
   .object()
   .shape({
     message: yup.string(),
-    memberList: yup.array().default([]),
   })
   .required();
 
@@ -41,10 +33,9 @@ export default function ChatWindow({
   const {
     authState: { user },
   } = useContext(AuthContext);
-  const { register, handleSubmit, reset, setValue, watch } = useForm({
+  const { register, handleSubmit, reset } = useForm({
     resolver: yupResolver(schema),
   });
-  const watchMembers = watch("memberList");
   const condition = useMemo(
     () => ({
       fieldName: "roomId",
@@ -53,19 +44,11 @@ export default function ChatWindow({
     }),
     [id],
   );
-  const [showAddMember, setShowAddMember] = useState(false);
   const messages = useFirestore("messages", { condition: condition });
   const online =
     onlineMembers?.filter(member => member !== user.uid).length > 0;
   const roomPhotoURL = groupChat ? photoURL : photoURL?.[user.uid];
   const roomDisplayName = groupChat ? roomName : roomName?.[user.uid];
-
-  useEffect(() => {
-    members &&
-      getDocuments("users", {
-        condition: { fieldName: "uid", operator: "in", compareValue: members },
-      }).then(datas => setValue("memberList", datas));
-  }, [setValue, members, id]);
 
   const sendMessage = async ({ message }) => {
     await addDocument("messages", {
@@ -73,16 +56,9 @@ export default function ChatWindow({
       photoURL: user.photoURL,
       uid: user.uid,
       roomId: id,
+      name: groupChat && user.displayName,
     });
     reset({ message: "" });
-  };
-
-  const addMember = async ({ memberList }) => {
-    await addDocument(
-      "rooms",
-      { members: memberList.map(member => member.uid) },
-      id,
-    );
   };
 
   return (
@@ -100,43 +76,7 @@ export default function ChatWindow({
             </div>
 
             {user.uid === host ? (
-              <div
-                className={`header__add-user ${showAddMember ? "show" : ""}`}
-              >
-                <SearchUser
-                  searchCollection='users'
-                  searchField='searchKey'
-                  placeholder='Add user'
-                  members={
-                    watchMembers &&
-                    watchMembers.filter(member => member.uid !== user.uid)
-                  }
-                  resOnClick={async resData => {
-                    if (
-                      watchMembers.some(member => member.uid === resData.uid)
-                    ) {
-                      setValue(
-                        "memberList",
-                        watchMembers.filter(
-                          member => member.uid !== resData.uid,
-                        ),
-                      );
-                      return;
-                    }
-
-                    setValue("memberList", [...watchMembers, resData]);
-                    await handleSubmit(addMember)();
-                  }}
-                  resIcon={[
-                    <AiOutlineUsergroupAdd />,
-                    <AiOutlineUsergroupDelete />,
-                  ]}
-                />
-
-                <AiOutlinePlusCircle
-                  onClick={() => setShowAddMember(prev => !prev)}
-                />
-              </div>
+              <ManageMember user={user} members={members} id={id} />
             ) : (
               <></>
             )}

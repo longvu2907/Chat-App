@@ -9,6 +9,7 @@ export default function Message({
   photoURL,
   currentUser,
   createdAt,
+  name,
 }) {
   const sent = currentUser.uid === uid;
   return uid === "initial" ? (
@@ -20,6 +21,7 @@ export default function Message({
     </div>
   ) : (
     <div className={`message message--${sent ? "sent" : "received"} `}>
+      <span className='message__name'>{name}</span>
       <div className='message__avatar'>
         {!sent && <Avatar src={photoURL} />}
       </div>
