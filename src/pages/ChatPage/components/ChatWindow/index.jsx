@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useContext, useMemo } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineArrowLeft, AiOutlineSend } from "react-icons/ai";
 import * as yup from "yup";
@@ -23,6 +23,7 @@ const schema = yup
 export default function ChatWindow({
   roomName,
   members,
+  unreadMembers,
   onlineMembers,
   photoURL,
   id,
@@ -58,8 +59,25 @@ export default function ChatWindow({
       roomId: id,
       name: groupChat && user.displayName,
     });
+    id &&
+      addDocument(
+        "rooms",
+        {
+          unreadMembers: members.filter(member => member !== user.uid),
+        },
+        id,
+      );
     reset({ message: "" });
   };
+
+  useEffect(() => {
+    unreadMembers &&
+      addDocument(
+        "rooms",
+        { unreadMembers: unreadMembers.filter(member => member !== user.uid) },
+        id,
+      );
+  }, [messages, unreadMembers, id, user.uid]);
 
   return (
     <Card className={`chat-window ${id ? "chat-window--active" : ""}`}>

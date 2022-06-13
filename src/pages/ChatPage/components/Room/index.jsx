@@ -1,6 +1,7 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import Avatar from "../../../../components/Avatar";
 import useFirestore from "../../../../hooks/useFirestore";
+import addDocument from "../../../../services/firebase/addDocument";
 import getRelativeTime from "../../../../utils/getRelativeTime";
 import "./index.scss";
 
@@ -10,7 +11,7 @@ export default function Room({
   photoURL,
   onlineMembers,
   groupChat,
-  unread,
+  unreadMembers,
   user,
   active,
   onClick,
@@ -19,9 +20,16 @@ export default function Room({
     () => ({ fieldName: "roomId", operator: "==", compareValue: id }),
     [id],
   );
+  const unread = unreadMembers && unreadMembers.includes(user.uid);
   const lastMessage = useFirestore("messages", { condition })[0];
   const roomPhotoURL = groupChat ? photoURL : photoURL[user.uid];
   const roomDisplayName = groupChat ? roomName : roomName[user.uid];
+
+  useEffect(() => {
+    console.log(lastMessage);
+    lastMessage &&
+      addDocument("rooms", { lastUpdate: lastMessage.createdAt }, id);
+  }, [lastMessage, id]);
 
   return (
     <div className={`room ${active ? "active" : ""}`} onClick={onClick}>

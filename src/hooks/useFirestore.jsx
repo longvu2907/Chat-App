@@ -51,10 +51,12 @@ export default function useFirestore(
 
           if (change.type === "modified") {
             setDocuments(prev =>
-              prev.map(prevData => {
-                if (prevData.id === change.doc.id) return data;
-                return prevData;
-              }),
+              prev
+                .map(prevData => {
+                  if (prevData.id === change.doc.id) return data;
+                  return prevData;
+                })
+                .sort((a, b) => b.lastUpdate - a.lastUpdate),
             );
           }
 

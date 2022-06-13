@@ -21,10 +21,14 @@ export default function ChatPage() {
     [user.uid],
   );
   const setLastestRoom = useRef(true);
-  const roomList = useFirestore("rooms", { condition });
+  const roomList = useFirestore("rooms", {
+    condition,
+    orderByField: "lastUpdate",
+  });
   const [currentRoom, setCurrentRoom] = useState(null);
 
   useEffect(() => {
+    console.log(roomList);
     if (setLastestRoom.current && roomList.length !== 0 && !isMobile) {
       setCurrentRoom(roomList[0]);
       setLastestRoom.current = false;
