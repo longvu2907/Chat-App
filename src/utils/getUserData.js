@@ -13,6 +13,6 @@ export default function getUserData({
     phoneNumber,
     photoURL,
     uid,
-    searchKey: generateSearchKey(displayName),
+    searchKey: displayName && generateSearchKey(displayName),
   };
 }

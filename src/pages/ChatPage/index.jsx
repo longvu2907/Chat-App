@@ -1,6 +1,7 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import InformationForm from "../../components/Form/InformationForm";
 import { AuthContext } from "../../context/AuthProvider";
+import useFirestore from "../../hooks/useFirestore";
 import ChatWindow from "./components/ChatWindow";
 import SideBar from "./components/SideBar";
 import "./index.scss";
@@ -10,15 +11,33 @@ export default function ChatPage() {
     authState: { user },
   } = useContext(AuthContext);
   const [showModal, setShowModal] = useState(!user.displayName);
+  const condition = useMemo(
+    () => ({
+      fieldName: "members",
+      operator: "array-contains",
+      compareValue: user.uid,
+    }),
+    [user.uid],
+  );
+  const setLastestRoom = useRef(true);
+  const roomList = useFirestore("rooms", { condition });
+  const [currentRoom, setCurrentRoom] = useState(null);
+
+  useEffect(() => {
+    if (setLastestRoom.current && roomList.length !== 0) {
+      setCurrentRoom(roomList[0]);
+      setLastestRoom.current = false;
+    }
+  }, [roomList]);
 
   return (
     <div className='chat'>
-      <SideBar />
-      <ChatWindow
-        online
-        roomName='Anh Thuy'
-        avatar='https://placekitten.com/408/287'
+      <SideBar
+        roomList={roomList}
+        currentRoom={currentRoom}
+        setCurrentRoom={setCurrentRoom}
       />
+      <ChatWindow {...currentRoom} />
       {showModal && <InformationForm setShowModal={setShowModal} />}
     </div>
   );

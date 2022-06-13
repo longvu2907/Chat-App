@@ -2,6 +2,8 @@
   display: flex;
   align-items: center;
   width: 100%;
+  padding: 0.2rem 0;
+  position: relative;
 
   &.first {
     .message__avatar {
@@ -32,6 +34,15 @@
       animation: slideUp 0.3s linear;
     }
   }
+
+  &__time {
+    position: absolute;
+    opacity: 0;
+    bottom: 0;
+    font-size: 0.65rem;
+    transform: translateY(100%);
+  }
+
   &--sent {
     justify-content: end;
 
@@ -72,6 +83,29 @@
       .message__text {
         border-top-left-radius: 1rem;
       }
+    }
+  }
+
+  &--initial {
+    justify-content: center;
+    flex-direction: column;
+    .message__time {
+      position: relative;
+      transform: none;
+    }
+    .message__text {
+      font-size: 1.25rem;
+      font-style: italic;
+      opacity: 0.9;
+      margin: 0;
+      padding: 0;
+    }
+  }
+  &.last {
+  }
+  &.first {
+    .message__time {
+      opacity: 0.8;
     }
   }
 }

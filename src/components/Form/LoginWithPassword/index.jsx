@@ -38,8 +38,7 @@ export default function LoginWithPassword() {
   const onSubmit = async ({ email, password }) => {
     setIsLoading(true);
     try {
-      const user = await signInWithEmailAndPassword(auth, email, password);
-      console.log(user);
+      await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
       if (error.code.includes("password"))
         setError("password", { message: AuthError[error.code] });

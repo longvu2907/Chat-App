@@ -1,55 +1,34 @@
-import React, { useEffect, useRef } from "react";
-import Avatar from "../Avatar";
+import Avatar from "../../../../components/Avatar";
+import getRelativeTime from "../../../../utils/getRelativeTime";
 import "./index.scss";
 
-export default function Message({ avatar, sent, newMessage, text }) {
-  const messageRef = useRef(null);
-
-  useEffect(() => {
-    const message = messageRef.current;
-    message.classList.remove("last");
-    message.classList.remove("first");
-
-    if (
-      (sent &&
-        message.nextElementSibling &&
-        message.nextElementSibling.classList.contains("message--received")) ||
-      (!sent &&
-        message.nextElementSibling &&
-        message.nextElementSibling.classList.contains("message--sent")) ||
-      !message.nextElementSibling
-    ) {
-      message.classList.add("last");
-    }
-
-    if (
-      (sent &&
-        message.previousElementSibling &&
-        message.previousElementSibling.classList.contains(
-          "message--received",
-        )) ||
-      (!sent &&
-        message.previousElementSibling &&
-        message.previousElementSibling.classList.contains("message--sent")) ||
-      !message.previousElementSibling
-    ) {
-      message.classList.add("first");
-    }
-  }, [
-    sent,
-    messageRef.current?.nextElementSibling,
-    messageRef.current?.previousElementSibling,
-  ]);
-
-  return (
-    <div
-      className={`message message--${sent ? "sent" : "received"} `}
-      ref={messageRef}
-    >
-      <div className='message__avatar'>{!sent && <Avatar src={avatar} />}</div>
+export default function Message({
+  uid,
+  newMessage,
+  text,
+  photoURL,
+  currentUser,
+  createdAt,
+}) {
+  const sent = currentUser.uid === uid;
+  return uid === "initial" ? (
+    <div className='message message--initial'>
+      <span className='message__time'>
+        {createdAt.toDate().toLocaleString()}
+      </span>
+      <span className='message__text'>{text}</span>
+    </div>
+  ) : (
+    <div className={`message message--${sent ? "sent" : "received"} `}>
+      <div className='message__avatar'>
+        {!sent && <Avatar src={photoURL} />}
+      </div>
       <div className={`message__text ${newMessage ? "slide-up" : ""}`}>
         <p>{text}</p>
       </div>
+      <span className='message__time'>
+        {getRelativeTime(createdAt.toDate())}
+      </span>
     </div>
   );
 }

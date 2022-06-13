@@ -1,5 +1,4 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { arrayUnion } from "firebase/firestore";
 import { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -12,7 +11,7 @@ import Input from "../../../../components/Input";
 import Modal from "../../../../components/Modal";
 import { AuthContext } from "../../../../context/AuthProvider";
 import { LoadingContext } from "../../../../context/LoadingProvider";
-import addDocument from "../../../../services/firebase/addDocument";
+import addRoomChat from "../../../../services/firebase/addRoomChat";
 import { AuthError } from "../../../../services/firebase/AuthError";
 import SearchUser from "../SearchUser";
 
@@ -38,36 +37,26 @@ export default function CreateRoomModal({ setShowModal, ...props }) {
   const { setIsLoading } = useContext(LoadingContext);
   const watchMembers = watch("members");
   const {
-    authState: { user },
+    authState: {
+      user: { displayName, photoURL, uid },
+    },
   } = useContext(AuthContext);
 
   useEffect(() => {
-    setValue("members", [user.uid]);
-  }, [setValue, user]);
+    setValue("members", [{ displayName, photoURL, uid }]);
+  }, [setValue, displayName, photoURL, uid]);
 
   const onSubmit = async ({ roomName, members }) => {
     setIsLoading(true);
     try {
-      const resDoc = await addDocument("rooms", {
+      addRoomChat({
         roomName,
-        members,
-        photoURL: `https://avatars.dicebear.com/api/jdenticon/${roomName}.svg`,
+        members: members.map(member => member.uid),
+        groupChat: true,
+        host: uid,
       });
-      await Promise.all(
-        members.map(
-          async member =>
-            await addDocument(
-              "users",
-              {
-                roomList: arrayUnion(resDoc.id),
-              },
-              member,
-            ),
-        ),
-      );
       setShowModal(false);
     } catch (error) {
-      console.log(error);
       setError("roomName", { message: AuthError[error.code] });
     }
     setIsLoading(false);
@@ -85,20 +74,21 @@ export default function CreateRoomModal({ setShowModal, ...props }) {
         />
         <SearchUser
           searchCollection='users'
-          searchField='searchName'
+          searchField='searchKey'
           placeholder='Add user'
-          members={watchMembers}
-          resOnClick={e => {
-            const uid = e.currentTarget.getAttribute("uid");
-            if (watchMembers.includes(uid)) {
+          members={
+            watchMembers && watchMembers.filter(member => member.uid !== uid)
+          }
+          resOnClick={resData => {
+            if (watchMembers.some(member => member.uid === resData.uid)) {
               setValue(
                 "members",
-                watchMembers.filter(element => element !== uid),
+                watchMembers.filter(member => member.uid !== resData.uid),
               );
               return;
             }
 
-            setValue("members", [...watchMembers, uid]);
+            setValue("members", [...watchMembers, resData]);
           }}
           resIcon={[<AiOutlineUsergroupAdd />, <AiOutlineUsergroupDelete />]}
         />

@@ -1,11 +1,12 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineSearch } from "react-icons/ai";
 import Input from "../../../../components/Input";
+import { AuthContext } from "../../../../context/AuthProvider";
 import useFirestore from "../../../../hooks/useFirestore";
 import unicodeNormalizer from "../../../../utils/unicodeNormalizer";
-import Avatar from "../Avatar";
 import "./index.scss";
+import Result from "./Result";
 
 export default function SearchUser({
   searchCollection,
@@ -31,32 +32,29 @@ export default function SearchUser({
     [searchField, searchKey],
   );
 
-  const [results, loadMoreResults] = useFirestore(searchCollection, {
+  const results = useFirestore(searchCollection, {
     condition,
   });
+  const {
+    authState: { user },
+  } = useContext(AuthContext);
 
   useEffect(() => {
     const searchDebounce = setTimeout(() => {
       setSearchKey(unicodeNormalizer(watchSearch));
     }, 500);
 
-    return () => {
-      clearTimeout(searchDebounce);
-    };
-  }, [results, watchSearch]);
-
-  useEffect(() => {
-    //Click out side search-wrapper
     function handleClickOutside(e) {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target))
         setShowResult(false);
     }
+    document.addEventListener("mousedown", handleClickOutside);
 
-    document.addEventListener("click", handleClickOutside);
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
+      clearTimeout(searchDebounce);
     };
-  }, [wrapperRef]);
+  }, [results, watchSearch, wrapperRef]);
 
   return (
     <div
@@ -81,25 +79,30 @@ export default function SearchUser({
           </div>
           <span className='result__search-text'>{`Search for "${watchSearch}"`}</span>
         </div>
-        {results.map(({ displayName, photoURL, uid }) => {
-          const added = members && members.includes(uid);
-          return (
-            <div
-              className={`result ${added ? "added" : ""}`}
-              onClick={resOnClick}
-              key={uid}
-              uid={uid}
-            >
-              <div className='result__avatar'>
-                <Avatar src={photoURL} />
-              </div>
-              <span className='result__name'>{displayName}</span>
-              <div className='result__icon'>
-                {resIcon && (added ? resIcon[1] : resIcon[0])}
-              </div>
-            </div>
-          );
-        })}
+        {members &&
+          members.map(member => (
+            <Result
+              added
+              resOnClick={() => resOnClick(member)}
+              resIcon={resIcon}
+              key={member.uid}
+              {...member}
+            />
+          ))}
+        {results
+          .filter(
+            ({ uid }) =>
+              (!members || members.every(member => member.uid !== uid)) &&
+              uid !== user.uid,
+          )
+          .map(res => (
+            <Result
+              resOnClick={() => resOnClick(res)}
+              resIcon={resIcon}
+              key={res.uid}
+              {...res}
+            />
+          ))}
       </div>
     </div>
   );

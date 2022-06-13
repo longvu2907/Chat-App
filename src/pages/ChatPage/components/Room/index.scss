@@ -30,7 +30,7 @@
       font-weight: normal;
     }
 
-    .message {
+    .lastMessage {
       display: flex;
       align-items: baseline;
       opacity: 0.9;
@@ -69,7 +69,7 @@
       .name {
         font-weight: bolder;
       }
-      .message {
+      .lastMessage {
         &__text {
           color: var(--unread);
           font-weight: normal;

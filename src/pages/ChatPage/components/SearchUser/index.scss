@@ -11,13 +11,15 @@
   .result-list {
     display: flex;
     flex-direction: column;
-    // padding: 0 1rem 1rem;
     width: 99%;
     background-color: var(--bg-primary);
     text-align: left;
 
+    max-height: calc(500%);
+    overflow: auto;
     box-shadow: 1px 1px 2px var(--shadow);
     border-radius: 0 0 0.5rem 0.5rem;
+
     position: absolute;
     top: -999999px;
     opacity: 0;
@@ -33,7 +35,6 @@
     .result {
       display: flex;
       align-items: center;
-      // margin-top: ;
       padding: 0.75rem 1rem;
       border-radius: 0.5rem;
 
@@ -82,6 +83,11 @@
       &.added {
         color: var(--active);
       }
+    }
+  }
+  @media (max-screen: 780px) {
+    .result-list {
+      max-height: calc(350%);
     }
   }
 }

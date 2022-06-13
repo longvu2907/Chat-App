@@ -9,9 +9,11 @@ const units = {
 const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 
 export default function getRelativeTime(d1, d2 = new Date()) {
-  var elapsed = d1 - d2;
+  if (d1) {
+    var elapsed = d1 - d2;
 
-  for (var u in units)
-    if (Math.abs(elapsed) > units[u] || u === "second")
-      return rtf.format(Math.round(elapsed / units[u]), u);
+    for (var u in units)
+      if (Math.abs(elapsed) > units[u] || u === "second")
+        return rtf.format(Math.round(elapsed / units[u]), u);
+  }
 }

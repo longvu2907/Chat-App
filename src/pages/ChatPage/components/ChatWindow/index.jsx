@@ -1,15 +1,16 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { AiOutlineSend, AiOutlinePlusCircle } from "react-icons/ai";
+import { AiOutlinePlusCircle, AiOutlineSend } from "react-icons/ai";
 import * as yup from "yup";
+import Avatar from "../../../../components/Avatar";
 import Card from "../../../../components/Card";
 import Input from "../../../../components/Input";
-import { LoadingContext } from "../../../../context/LoadingProvider";
+import { AuthContext } from "../../../../context/AuthProvider";
 import useFirestore from "../../../../hooks/useFirestore";
-import Avatar from "../Avatar";
-import Message from "../Message";
+import addDocument from "../../../../services/firebase/addDocument";
 import "./index.scss";
+import MessageList from "./MessageList";
 
 const schema = yup
   .object()
@@ -18,56 +19,81 @@ const schema = yup
   })
   .required();
 
-export default function ChatWindow({ roomName, online, avatar }) {
-  const { setIsLoading } = useContext(LoadingContext);
-  const { register, handleSubmit } = useForm({
+export default function ChatWindow({
+  roomName,
+  onlineMembers,
+  photoURL,
+  id,
+  host,
+  groupChat,
+}) {
+  const {
+    authState: { user },
+  } = useContext(AuthContext);
+  const { register, handleSubmit, reset } = useForm({
     resolver: yupResolver(schema),
   });
-  const [messages, loadMessages] = useFirestore("messages", {
-    limitNumber: 5,
-  });
+  const condition = useMemo(
+    () => ({
+      fieldName: "roomId",
+      operator: "==",
+      compareValue: id || "",
+    }),
+    [id],
+  );
+  const messages = useFirestore("messages", { condition: condition });
+  const online =
+    onlineMembers?.filter(member => member !== user.uid).length > 0;
+  const roomPhotoURL = groupChat ? photoURL : photoURL?.[user.uid];
+  const roomDisplayName = groupChat ? roomName : roomName?.[user.uid];
 
-  const onSubmit = ({ message }) => {
-    // setMessages(prev => [
-    //   {
-    //     key: 3,
-    //     sent: false,
-    //     avatar: "https://placekitten.com/408/287",
-    //     text: message,
-    //   },
-    //   ...prev,
-    // ]);
-    loadMessages();
+  const onSubmit = async ({ message }) => {
+    await addDocument("messages", {
+      text: message,
+      photoURL: user.photoURL,
+      uid: user.uid,
+      roomId: id,
+    });
+    reset({ message: "" });
   };
 
   return (
     <Card className='chat-window'>
-      <div className='chat-window__header'>
-        <div className='header__room-info'>
-          <Avatar src={avatar} online={online} />
-          <div className='room-wrapper'>
-            <h2 className='name'>{roomName}</h2>
-            <span className='status'>{online ? "online" : "offline"}</span>
+      {id ? (
+        <>
+          <div className='chat-window__header'>
+            <div className='header__room-info'>
+              <Avatar src={roomPhotoURL} online={online} />
+              <div className='room-wrapper'>
+                <h2 className='name'>{roomDisplayName}</h2>
+                <span className='status'>{online ? "online" : "offline"}</span>
+              </div>
+            </div>
+
+            {user.uid === host ? (
+              <div className='header__add-user'>
+                <AiOutlinePlusCircle />
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
-        </div>
-        <div className='header__add-user'>
-          <AiOutlinePlusCircle />
-        </div>
-      </div>
-      <div className='message-list'>
-        {messages.map(message => (
-          <Message {...message} newMessage={message.newData} key={message.id} />
-        ))}
-      </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          name='message'
-          register={register}
-          icon={<AiOutlineSend />}
-          onIconClick={() => {}}
-          placeholder='Aa'
-        />
-      </form>
+          <MessageList messages={messages} />
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Input
+              name='message'
+              register={register}
+              icon={<AiOutlineSend />}
+              onIconClick={handleSubmit(onSubmit)}
+              placeholder='Aa'
+            />
+          </form>
+        </>
+      ) : (
+        <span className='chat-window__text'>
+          Choose or create new room to begin chatting
+        </span>
+      )}
     </Card>
   );
 }

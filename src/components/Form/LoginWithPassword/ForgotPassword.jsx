@@ -42,7 +42,7 @@ export default function ForgotPassword({ setShowModal, ...props }) {
   };
 
   return (
-    <Modal {...props}>
+    <Modal setShowModal={setShowModal}>
       {passwordSent ? (
         <>
           <h2 className='modal__header'>Password reset email sent</h2>

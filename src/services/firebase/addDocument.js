@@ -2,27 +2,22 @@ import {
   addDoc,
   collection,
   doc,
-  getDoc,
   setDoc,
   Timestamp,
   updateDoc,
 } from "firebase/firestore";
 import { db } from "./config";
+import getDocuments from "./getDocuments";
 
 export default async function addDocument(collectionName, data, docID = null) {
-  const docData = {
-    ...data,
-    createdAt: Timestamp.now(),
-  };
-
   if (docID) {
     const docRef = doc(db, collectionName, docID);
-    const data = await getDoc(docRef);
-    if (data.data()) await updateDoc(docRef, docData);
-    else await setDoc(docRef, docData);
-    return;
+    const docData = await getDocuments(collectionName, { docID });
+
+    if (docData) return await updateDoc(docRef, data);
+    return await setDoc(docRef, { ...data, createdAt: Timestamp.now() });
   }
 
   const collectionRef = collection(db, collectionName);
-  return await addDoc(collectionRef, docData);
+  return await addDoc(collectionRef, { ...data, createdAt: Timestamp.now() });
 }

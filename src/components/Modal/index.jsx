@@ -7,9 +7,11 @@ export default function Modal({ setShowModal, children }) {
   return (
     <div
       className='modal-wrapper'
-      onMouseDown={() => setShowModal && setShowModal(false)}
+      onMouseDown={e =>
+        setShowModal && setShowModal(e.currentTarget !== e.target)
+      }
     >
-      <Card className='modal' onMouseDown={e => e.stopPropagation()}>
+      <Card className='modal'>
         {setShowModal && (
           <AiOutlineClose
             className='modal__close-btn'

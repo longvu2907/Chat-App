@@ -8,7 +8,6 @@
 
   display: flex;
   justify-content: center;
-  align-items: center;
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 1;
 
@@ -16,6 +15,8 @@
     position: relative;
     text-align: center;
     min-width: 25rem;
+    height: fit-content;
+    margin-top: 2rem;
 
     &__description {
       max-width: 20rem;

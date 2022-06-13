@@ -24,12 +24,27 @@
     font-size: 1.25rem;
   }
   &__auth {
-    * + * {
+    display: flex;
+    align-items: center;
+    .auth__user {
+      margin-right: 0.5rem;
+      .user__avatar {
+        width: 2rem;
+        height: 2rem;
+        margin: 0 auto;
+      }
+      .user__name {
+        font-size: 0.85rem;
+        font-weight: lighter;
+        font-style: italic;
+      }
+    }
+    a + a {
       padding-left: 0.5rem;
       margin-left: 0.5rem;
       border-left: 1px solid var(--text-primary);
     }
-    *:hover {
+    a:hover {
       opacity: 0.75;
     }
   }
