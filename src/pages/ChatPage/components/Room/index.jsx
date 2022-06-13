@@ -26,7 +26,6 @@ export default function Room({
   const roomDisplayName = groupChat ? roomName : roomName[user.uid];
 
   useEffect(() => {
-    console.log(lastMessage);
     lastMessage &&
       addDocument("rooms", { lastUpdate: lastMessage.createdAt }, id);
   }, [lastMessage, id]);

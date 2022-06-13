@@ -28,7 +28,6 @@ export default function ChatPage() {
   const [currentRoom, setCurrentRoom] = useState(null);
 
   useEffect(() => {
-    console.log(roomList);
     if (setLastestRoom.current && roomList.length !== 0 && !isMobile) {
       setCurrentRoom(roomList[0]);
       setLastestRoom.current = false;

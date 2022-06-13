@@ -34,7 +34,6 @@ export default function ManageMember({ members, id, user }) {
   }, [setValue, members, id]);
 
   const addMember = async ({ memberList }) => {
-    console.log(memberList);
     await addDocument(
       "rooms",
       { members: memberList.map(member => member.uid) },

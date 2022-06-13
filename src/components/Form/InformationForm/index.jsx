@@ -47,7 +47,6 @@ export default function InformationForm({ setShowModal }) {
 
       setShowModal(false);
     } catch (error) {
-      console.log(error);
       setError("displayName", { message: AuthError[error.code] });
     }
     setIsLoading(false);
