@@ -3,15 +3,13 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCck_JK7BITsRDmkTbhUKq7k3GHh85bQes",
-  authDomain: "todo-list-6ddaa.firebaseapp.com",
-  databaseURL:
-    "https://todo-list-6ddaa-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "todo-list-6ddaa",
-  storageBucket: "todo-list-6ddaa.appspot.com",
-  messagingSenderId: "522610170408",
-  appId: "1:522610170408:web:ada2ab5c5dfd888626f31d",
-  measurementId: "G-04PYZ6CYTD",
+  apiKey: "AIzaSyAaJ4-pltFpSNR8EJ6HfFDO-O6VJ8ejI1s",
+  authDomain: "chat-app-55b03.firebaseapp.com",
+  projectId: "chat-app-55b03",
+  storageBucket: "chat-app-55b03.appspot.com",
+  messagingSenderId: "32023613446",
+  appId: "1:32023613446:web:75f4d1049460340da97387",
+  measurementId: "G-QNYPLE14FG",
 };
 
 // Initialize Firebase

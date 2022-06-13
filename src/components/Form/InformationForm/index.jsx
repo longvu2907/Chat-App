@@ -66,6 +66,7 @@ export default function InformationForm({ setShowModal }) {
           error={errors.displayName}
           placeholder='Display Name'
           icon={<AiOutlineUser />}
+          autoComplete='off'
         />
         <GenderSelect register={register} />
         <Button type='submit'>Done</Button>
