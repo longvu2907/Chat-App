@@ -48,7 +48,7 @@ export default function SideBar({ roomList, currentRoom, setCurrentRoom }) {
   };
 
   return (
-    <div className='side-bar'>
+    <div className={`side-bar ${!currentRoom ? "side-bar--active" : ""}`}>
       <SearchUser
         className='side-bar__search'
         searchCollection='users'

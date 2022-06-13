@@ -1,8 +1,6 @@
 import { useMemo } from "react";
-import { useEffect, useState } from "react";
 import Avatar from "../../../../components/Avatar";
 import useFirestore from "../../../../hooks/useFirestore";
-import getDocuments from "../../../../services/firebase/getDocuments";
 import getRelativeTime from "../../../../utils/getRelativeTime";
 import "./index.scss";
 

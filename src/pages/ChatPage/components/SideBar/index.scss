@@ -26,6 +26,7 @@
 
   @media (max-width: 480px) {
     & {
+      display: none;
       width: 100%;
       &__search {
         border-radius: 0.5rem 0.5rem 0.2rem 0.2rem !important;
@@ -33,6 +34,9 @@
       &__chat-list {
         border-radius: 0.2rem 0.2rem 0.5rem 0.5rem;
       }
+    }
+    &--active {
+      display: flex;
     }
   }
 }

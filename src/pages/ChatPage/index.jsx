@@ -1,4 +1,5 @@
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { isMobile } from "react-device-detect";
 import InformationForm from "../../components/Form/InformationForm";
 import { AuthContext } from "../../context/AuthProvider";
 import useFirestore from "../../hooks/useFirestore";
@@ -24,7 +25,7 @@ export default function ChatPage() {
   const [currentRoom, setCurrentRoom] = useState(null);
 
   useEffect(() => {
-    if (setLastestRoom.current && roomList.length !== 0) {
+    if (setLastestRoom.current && roomList.length !== 0 && !isMobile) {
       setCurrentRoom(roomList[0]);
       setLastestRoom.current = false;
     }
@@ -37,7 +38,7 @@ export default function ChatPage() {
         currentRoom={currentRoom}
         setCurrentRoom={setCurrentRoom}
       />
-      <ChatWindow {...currentRoom} />
+      <ChatWindow {...currentRoom} setCurrentRoom={setCurrentRoom} />
       {showModal && <InformationForm setShowModal={setShowModal} />}
     </div>
   );

@@ -25,6 +25,11 @@
     .header__room-info {
       display: flex;
       align-items: center;
+      & > svg {
+        display: none;
+        margin-right: 1rem;
+        font-size: 1.5rem;
+      }
       .avatar {
         width: 2rem;
         height: 2rem;
@@ -45,8 +50,29 @@
     .header__add-user {
       display: flex;
       align-items: center;
-      font-size: 1.5rem;
-      &:hover {
+
+      .search-wrapper {
+        opacity: 0;
+        z-index: -1;
+        transition: all 0.5s linear;
+      }
+
+      &.show .search-wrapper {
+        margin-right: 0.5rem;
+        opacity: 1;
+        z-index: 1;
+      }
+      & > svg {
+        font-size: 1.5rem;
+        transition: all 0.25s linear;
+      }
+      &.show > svg {
+        transform: rotateZ(45deg);
+      }
+      &.show > svg:hover {
+        transform: rotateZ(45deg) scale(1.2);
+      }
+      & > svg:hover {
         cursor: pointer;
         color: var(--link-hover);
         transform: scale(1.2);
@@ -73,8 +99,13 @@
       border-radius: 0.5rem;
       margin: 0;
     }
-    &.show {
+    &--active {
       display: flex;
+      .header__room-info {
+        & > svg {
+          display: block;
+        }
+      }
     }
   }
 }
