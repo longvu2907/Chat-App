@@ -31,7 +31,7 @@ export default function Pages() {
             </RequireAuth>
           }
         />
-        <Route path='/*' element={<NotFoundPage />} />
+        <Route path='*' element={<NotFoundPage />} />
       </Route>
     </Routes>
   );
@@ -39,14 +39,14 @@ export default function Pages() {
 
 const Layout = ({ pending }) => {
   return (
-    <Loading>
-      <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Loading />}>
+      <Loading>
         <Header />
         <div className='wrapper'>
           <Container>{!pending && <Outlet />}</Container>
         </div>
-      </Suspense>
-    </Loading>
+      </Loading>
+    </Suspense>
   );
 };
 

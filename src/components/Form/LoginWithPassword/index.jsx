@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useContext, useState } from "react";
+import { lazy, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiFillEye, AiFillEyeInvisible, AiOutlineMail } from "react-icons/ai";
 import * as yup from "yup";
@@ -9,7 +9,8 @@ import { AuthError } from "../../../services/firebase/AuthError";
 import { auth } from "../../../services/firebase/config";
 import Button from "../../Button";
 import Input from "../../Input";
-import ForgotPassword from "./ForgotPassword";
+
+const ForgotPassword = lazy(() => import("./ForgotPassword"));
 
 const schema = yup
   .object()

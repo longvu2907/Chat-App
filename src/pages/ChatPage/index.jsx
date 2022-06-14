@@ -1,11 +1,14 @@
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { lazy, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
-import InformationForm from "../../components/Form/InformationForm";
 import { AuthContext } from "../../context/AuthProvider";
 import useFirestore from "../../hooks/useFirestore";
 import ChatWindow from "./components/ChatWindow";
 import SideBar from "./components/SideBar";
 import "./index.scss";
+
+const InformationForm = lazy(() =>
+  import("../../components/Form/InformationForm"),
+);
 
 export default function ChatPage() {
   const {
