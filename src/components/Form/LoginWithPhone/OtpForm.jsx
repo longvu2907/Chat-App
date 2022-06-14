@@ -54,6 +54,7 @@ export default function OtpForm({ confirmation }) {
                 separator={<span>-</span>}
                 containerStyle={{ justifyContent: "center" }}
                 hasErrored={errors.otp}
+                isInputNum={true}
                 errorStyle={{
                   outline: "1px solid var(--error-text)",
                 }}
