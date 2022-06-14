@@ -2,6 +2,7 @@ import { lazy, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { AuthContext } from "../../context/AuthProvider";
 import useFirestore from "../../hooks/useFirestore";
+import addDocument from "../../services/firebase/addDocument";
 import ChatWindow from "./components/ChatWindow";
 import SideBar from "./components/SideBar";
 import "./index.scss";
@@ -37,14 +38,31 @@ export default function ChatPage() {
     }
   }, [roomList]);
 
+  const setRoom = useMemo(
+    () => room => {
+      room.unreadMembers &&
+        addDocument(
+          "rooms",
+          {
+            unreadMembers: room.unreadMembers.filter(
+              member => member !== user.uid,
+            ),
+          },
+          room.id,
+        );
+      setCurrentRoom(room);
+    },
+    [user.uid],
+  );
+
   return (
     <div className='chat'>
       <SideBar
         roomList={roomList}
         currentRoom={currentRoom}
-        setCurrentRoom={setCurrentRoom}
+        setCurrentRoom={setRoom}
       />
-      <ChatWindow {...currentRoom} setCurrentRoom={setCurrentRoom} />
+      <ChatWindow {...currentRoom} setCurrentRoom={setRoom} />
       {showModal && <InformationForm setShowModal={setShowModal} />}
     </div>
   );
