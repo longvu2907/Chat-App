@@ -27,13 +27,48 @@
       }
     }
   }
+
+  &__name {
+    margin-left: 3rem;
+  }
+  &__time {
+    transform: translateY(25%);
+  }
+  &__name,
+  &__time {
+    opacity: 0.8;
+    font-size: 0.65rem;
+    display: none;
+  }
+
+  &.last {
+    margin-top: 1rem;
+    .message__name {
+      display: inline-block;
+    }
+  }
+  &.first {
+    margin-bottom: 1rem;
+    .message__time {
+      display: inline-block;
+    }
+    .message__avatar {
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border-radius: 100%;
+      }
+    }
+  }
+
   &--sent {
     align-items: flex-end;
+    .message__name {
+      display: none !important;
+    }
     .message-wrapper {
       justify-content: flex-end;
-      .message__name {
-        display: none;
-      }
 
       .message__text {
         background-color: var(--bg-primary);
@@ -90,40 +125,6 @@
       font-style: italic;
       text-align: center;
       opacity: 0.9;
-    }
-  }
-
-  &__name {
-    margin-left: 3rem;
-  }
-  &__time {
-    transform: translateY(25%);
-  }
-  &__name,
-  &__time {
-    opacity: 0.8;
-    font-size: 0.65rem;
-    display: none;
-  }
-
-  &.last {
-    margin-top: 1rem;
-    .message__name {
-      display: inline-block;
-    }
-  }
-  &.first {
-    margin-bottom: 1rem;
-    .message__time {
-      display: inline-block;
-    }
-    .message__avatar {
-      img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        border-radius: 100%;
-      }
     }
   }
 }
