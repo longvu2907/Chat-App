@@ -17,22 +17,10 @@ export default function MessageList({ messages }) {
       message.classList.remove("first");
       message.classList.remove("last");
 
-      if (
-        !next ||
-        (!message.classList.contains("message--received") &&
-          next.classList.contains("message--received")) ||
-        (!message.classList.contains("message--sent") &&
-          next.classList.contains("message--sent"))
-      )
+      if (!next || message.getAttribute("uid") !== next.getAttribute("uid"))
         message.classList.add("last");
 
-      if (
-        !prev ||
-        (!message.classList.contains("message--received") &&
-          prev.classList.contains("message--received")) ||
-        (!message.classList.contains("message--sent") &&
-          prev.classList.contains("message--sent"))
-      )
+      if (!prev || message.getAttribute("uid") !== prev.getAttribute("uid"))
         message.classList.add("first");
     });
   }, [messages]);

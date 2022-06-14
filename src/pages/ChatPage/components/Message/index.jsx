@@ -20,13 +20,18 @@ export default function Message({
       <span className='message__text'>{text}</span>
     </div>
   ) : (
-    <div className={`message message--${sent ? "sent" : "received"} `}>
+    <div
+      className={`message message--${sent ? "sent" : "received"} `}
+      uid={uid}
+    >
       <span className='message__name'>{name}</span>
-      <div className='message__avatar'>
-        {!sent && <Avatar src={photoURL} />}
-      </div>
-      <div className={`message__text ${newMessage ? "slide-up" : ""}`}>
-        <p>{text}</p>
+      <div className='message-wrapper'>
+        <div className='message__avatar'>
+          {!sent && <Avatar src={photoURL} />}
+        </div>
+        <div className={`message__text ${newMessage ? "slide-up" : ""}`}>
+          <p>{text}</p>
+        </div>
       </div>
       <span className='message__time'>
         {getRelativeTime(createdAt.toDate())}
