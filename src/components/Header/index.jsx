@@ -1,8 +1,6 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
-import LoadingBar from "react-top-loading-bar";
 import { AuthContext } from "../../context/AuthProvider";
-import { LoadingContext } from "../../context/LoadingProvider";
 import { ThemeContext } from "../../context/ThemeProvider";
 import Avatar from "../Avatar";
 import Container from "../Container";
@@ -14,13 +12,6 @@ export default function Header() {
   const {
     authState: { isSignedIn, pending, user },
   } = useContext(AuthContext);
-  const loadingBarRef = useRef(null);
-  const { isLoading } = useContext(LoadingContext);
-
-  useEffect(() => {
-    if (isLoading) loadingBarRef.current.continuousStart();
-    else loadingBarRef.current.complete();
-  }, [isLoading]);
 
   return (
     <header className='header'>
@@ -53,11 +44,6 @@ export default function Header() {
             ))}
         </div>
       </Container>
-      <LoadingBar
-        ref={loadingBarRef}
-        style={{ height: "2px", background: "var(--logo)" }}
-        shadow={false}
-      />
     </header>
   );
 }

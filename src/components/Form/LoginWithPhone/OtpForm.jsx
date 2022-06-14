@@ -11,7 +11,7 @@ import Button from "../../Button";
 const schema = yup
   .object()
   .shape({
-    otp: yup.string().required("OTP is required"),
+    otp: yup.number().required("OTP is required"),
   })
   .required();
 

@@ -19,6 +19,7 @@ export default function useFirestore(
 
   useEffect(() => {
     setIsLoading(true);
+    setDocuments([]);
     firstGetData.current = true;
 
     const collectionRef = collection(db, collectionName);
@@ -32,7 +33,6 @@ export default function useFirestore(
         where(fieldName, operator, compareValue),
         orderBy(orderByField, sortedIn),
       );
-      setDocuments([]);
     }
 
     const unsubscribe = onSnapshot(q, snapshot => {
@@ -67,9 +67,9 @@ export default function useFirestore(
           }
         });
       firstGetData.current = false;
+      setIsLoading(false);
     });
 
-    setIsLoading(false);
     return () => {
       unsubscribe();
     };

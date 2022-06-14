@@ -1,13 +1,16 @@
-import React, { useContext } from "react";
+import { lazy, Suspense, useContext } from "react";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import Container from "../components/Container";
 import Header from "../components/Header";
+import Loading from "../components/Loading";
 import { AuthContext } from "../context/AuthProvider";
 import { auth } from "../services/firebase/config";
-import ChatPage from "./ChatPage";
 import "./index.scss";
-import LoginPage from "./LoginPage";
-import SignupPage from "./SignupPage";
+
+const LoginPage = lazy(() => import("./LoginPage"));
+const SignupPage = lazy(() => import("./SignupPage"));
+const ChatPage = lazy(() => import("./ChatPage"));
+const NotFoundPage = lazy(() => import("./NotFoundPage"));
 
 export default function Pages() {
   const {
@@ -28,6 +31,7 @@ export default function Pages() {
             </RequireAuth>
           }
         />
+        <Route path='/*' element={<NotFoundPage />} />
       </Route>
     </Routes>
   );
@@ -35,12 +39,14 @@ export default function Pages() {
 
 const Layout = ({ pending }) => {
   return (
-    <>
-      <Header />
-      <div className='wrapper'>
-        <Container>{!pending && <Outlet />}</Container>
-      </div>
-    </>
+    <Loading>
+      <Suspense fallback={<Loading />}>
+        <Header />
+        <div className='wrapper'>
+          <Container>{!pending && <Outlet />}</Container>
+        </div>
+      </Suspense>
+    </Loading>
   );
 };
 
