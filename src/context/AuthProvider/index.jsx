@@ -17,16 +17,16 @@ function AuthProvider({ children }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const unsubcribeAuth = onAuthStateChanged(auth, user => {
+    const unsubcribeAuth = onAuthStateChanged(auth, async user => {
       if (user) {
+        await setOnlineStatus(user.uid, true);
+
         setAuthState({ isSignedIn: true, pending: false, user });
         navigate("/");
-
-        setOnlineStatus(user.uid, true);
       } else {
-        setAuthState({ isSignedIn: false, pending: false, user });
+        authState.user && (await setOnlineStatus(authState.user.uid, false));
 
-        authState.user && setOnlineStatus(authState.user.uid, false);
+        setAuthState({ isSignedIn: false, pending: false, user });
       }
 
       setIsLoading(false);

@@ -64,14 +64,12 @@
     }
 
     &.first {
-      margin-top: 0.5rem;
       .message__text {
         border-bottom-right-radius: 1rem;
       }
     }
 
     &.last {
-      margin-bottom: 0.5rem;
       .message__text {
         border-top-right-radius: 1rem;
       }
@@ -116,11 +114,13 @@
     }
   }
   &.last {
+    margin-top: 0.5rem;
     .message__name {
       opacity: 0.8;
     }
   }
   &.first {
+    margin-bottom: 0.5rem;
     .message__time {
       opacity: 0.8;
     }

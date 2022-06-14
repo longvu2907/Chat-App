@@ -16,7 +16,7 @@ export default function LoginPage() {
       <div className='boundary'>
         <span>OR</span>
       </div>
-      <Button onClick={loginWithGoogle}>
+      <Button onClick={async () => await loginWithGoogle()}>
         <AiFillGoogleCircle />
         Login With Google
       </Button>
