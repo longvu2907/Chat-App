@@ -77,20 +77,19 @@
     }
   }
 
-  &--initial {
+  &--system {
     text-align: center;
-    margin: 2rem 0;
+    margin: 1rem 0;
     .message__time {
+      font-size: 0.6rem;
       display: inline;
       transform: none;
     }
     .message__text {
-      font-size: 1.25rem;
+      font-size: 1rem;
       font-style: italic;
       text-align: center;
       opacity: 0.9;
-      margin: 0;
-      padding: 0;
     }
   }
 
@@ -102,6 +101,7 @@
   }
   &__name,
   &__time {
+    opacity: 0.8;
     font-size: 0.65rem;
     display: none;
   }

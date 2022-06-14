@@ -10,7 +10,7 @@ import { AuthContext } from "../../../../context/AuthProvider";
 import useFirestore from "../../../../hooks/useFirestore";
 import addDocument from "../../../../services/firebase/addDocument";
 import "./index.scss";
-import ManageMember from "./ManageMember";
+import ManageMember from "../ManageMember";
 import MessageList from "./MessageList";
 
 const schema = yup
@@ -23,7 +23,6 @@ const schema = yup
 export default function ChatWindow({
   roomName,
   members,
-  unreadMembers,
   onlineMembers,
   photoURL,
   id,
@@ -53,13 +52,13 @@ export default function ChatWindow({
 
   const sendMessage = async ({ message }) => {
     id &&
-      addDocument(
+      (await addDocument(
         "rooms",
         {
           unreadMembers: members.filter(member => member !== user.uid),
         },
         id,
-      );
+      ));
     reset({ message: "" });
 
     await addDocument("messages", {
@@ -84,9 +83,8 @@ export default function ChatWindow({
                 <span className='status'>{online ? "online" : "offline"}</span>
               </div>
             </div>
-
-            {user.uid === host ? (
-              <ManageMember user={user} members={members} id={id} />
+            {groupChat ? (
+              <ManageMember user={user} members={members} id={id} host={host} />
             ) : (
               <></>
             )}

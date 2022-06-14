@@ -1,7 +1,7 @@
-import React from "react";
 import Avatar from "../../../../components/Avatar";
+import "./index.scss";
 
-export default function Result({
+export default function UserDisplay({
   added,
   resOnClick,
   uid,
@@ -11,15 +11,15 @@ export default function Result({
 }) {
   return (
     <div
-      className={`result ${added ? "added" : ""}`}
+      className={`user-display ${added ? "added" : ""}`}
       onClick={resOnClick}
       uid={uid}
     >
-      <div className='result__avatar'>
+      <div className='user-display__avatar'>
         <Avatar src={photoURL} />
       </div>
-      <span className='result__name'>{displayName}</span>
-      <div className='result__icon'>
+      <span className='user-display__name'>{displayName}</span>
+      <div className='user-display__icon'>
         {resIcon && (added ? resIcon[1] : resIcon[0])}
       </div>
     </div>

@@ -3,10 +3,11 @@ import { useForm } from "react-hook-form";
 import { AiOutlineSearch } from "react-icons/ai";
 import Input from "../../../../components/Input";
 import { AuthContext } from "../../../../context/AuthProvider";
+import useClickOutside from "../../../../hooks/useClickOutside";
 import useFirestore from "../../../../hooks/useFirestore";
 import unicodeNormalizer from "../../../../utils/unicodeNormalizer";
+import UserDisplay from "../UserDisplay";
 import "./index.scss";
-import Result from "./Result";
 
 export default function SearchUser({
   searchCollection,
@@ -20,7 +21,7 @@ export default function SearchUser({
   const [showResult, setShowResult] = useState(false);
   const [searchKey, setSearchKey] = useState("");
   const wrapperRef = useRef(null);
-  const { register, watch } = useForm();
+  const { register, watch, reset } = useForm();
   const watchSearch = watch("search");
 
   const condition = useMemo(
@@ -39,22 +40,23 @@ export default function SearchUser({
     authState: { user },
   } = useContext(AuthContext);
 
+  useClickOutside({
+    wrapperRef,
+    onClick: () => {
+      reset({ search: "" });
+      setShowResult(false);
+    },
+  });
+
   useEffect(() => {
     const searchDebounce = setTimeout(() => {
       setSearchKey(unicodeNormalizer(watchSearch));
     }, 500);
 
-    function handleClickOutside(e) {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target))
-        setShowResult(false);
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
       clearTimeout(searchDebounce);
     };
-  }, [results, watchSearch, wrapperRef]);
+  }, [results, watchSearch]);
 
   return (
     <div
@@ -81,7 +83,7 @@ export default function SearchUser({
         </div>
         {members &&
           members.map(member => (
-            <Result
+            <UserDisplay
               added
               resOnClick={() => resOnClick(member)}
               resIcon={resIcon}
@@ -96,7 +98,7 @@ export default function SearchUser({
               uid !== user.uid,
           )
           .map(res => (
-            <Result
+            <UserDisplay
               resOnClick={() => resOnClick(res)}
               resIcon={resIcon}
               key={res.uid}

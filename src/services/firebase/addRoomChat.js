@@ -33,7 +33,7 @@ export default async function addRoomChat({
       text: groupChat
         ? `${roomName} was created`
         : "You are now connected on Chat App",
-      uid: "initial",
+      uid: "system",
       roomId: room.id,
     });
   } catch (error) {

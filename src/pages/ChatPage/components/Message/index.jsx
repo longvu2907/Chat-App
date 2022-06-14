@@ -12,8 +12,8 @@ export default function Message({
   name,
 }) {
   const sent = currentUser.uid === uid;
-  return uid === "initial" ? (
-    <div className='message message--initial'>
+  return uid === "system" ? (
+    <div className='message message--system'>
       <span className='message__time'>
         {createdAt.toDate().toLocaleString()}
       </span>

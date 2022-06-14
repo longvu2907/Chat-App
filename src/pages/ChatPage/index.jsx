@@ -35,7 +35,10 @@ export default function ChatPage() {
     if (setLastestRoom.current && roomList.length !== 0 && !isMobile) {
       setCurrentRoom(roomList[0]);
       setLastestRoom.current = false;
-    }
+    } else
+      setCurrentRoom(
+        prev => roomList.filter(room => room.id === prev?.id)?.[0],
+      );
   }, [roomList]);
 
   const setRoom = useMemo(
