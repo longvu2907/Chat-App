@@ -1,4 +1,4 @@
-import { lazy, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import Button from "../../../../components/Button";
 import Card from "../../../../components/Card";
 import { AuthContext } from "../../../../context/AuthProvider";
@@ -6,9 +6,8 @@ import addRoomChat from "../../../../services/firebase/addRoomChat";
 import getDocuments from "../../../../services/firebase/getDocuments";
 import Room from "../Room";
 import SearchUser from "../SearchUser";
+import CreateRoomModal from "./CreateRoomModal";
 import "./index.scss";
-
-const CreateRoomModal = lazy(() => import("./CreateRoomModal"));
 
 export default function SideBar({ roomList, currentRoom, setCurrentRoom }) {
   const [showModal, setShowModal] = useState(false);

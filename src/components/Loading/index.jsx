@@ -1,8 +1,6 @@
 import { useContext, useEffect, useRef } from "react";
 import LoadingBar from "react-top-loading-bar";
 import { LoadingContext } from "../../context/LoadingProvider";
-import Container from "../Container";
-import Header from "../Header";
 
 export default function Loading({ children }) {
   const { isLoading } = useContext(LoadingContext);
@@ -20,16 +18,7 @@ export default function Loading({ children }) {
         style={{ height: "2px", background: "var(--logo)" }}
         shadow={false}
       />
-      {children ? (
-        children
-      ) : (
-        <>
-          <Header />
-          <div className='wrapper'>
-            <Container />
-          </div>
-        </>
-      )}
+      {children}
     </>
   );
 }

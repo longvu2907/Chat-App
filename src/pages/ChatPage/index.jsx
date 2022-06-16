@@ -43,7 +43,7 @@ export default function ChatPage() {
 
   const setRoom = useMemo(
     () => room => {
-      room.unreadMembers &&
+      room &&
         addDocument(
           "rooms",
           {

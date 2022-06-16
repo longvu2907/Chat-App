@@ -76,7 +76,9 @@ export default function ChatWindow({
         <>
           <div className='chat-window__header'>
             <div className='header__room-info'>
-              <AiOutlineArrowLeft onClick={() => setCurrentRoom(null)} />
+              <div className='back-btn'>
+                <AiOutlineArrowLeft onClick={() => setCurrentRoom(null)} />
+              </div>
               <Avatar src={roomPhotoURL} online={online} />
               <div className='room-wrapper'>
                 <h2 className='name'>{roomDisplayName}</h2>
