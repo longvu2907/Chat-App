@@ -24,6 +24,7 @@ export default async function addRoomChat({
       host,
       onlineMembers,
       lastUpdate: Timestamp.now(),
+      unreadMembers: [],
       photoURL: photoURL
         ? photoURL
         : `https://avatars.dicebear.com/api/jdenticon/${roomName}.svg`,
