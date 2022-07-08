@@ -50,7 +50,7 @@ const Layout = ({ pending }) => {
 const Signout = () => {
   auth.signOut();
 
-  return <Navigate to='/login' />;
+  return <></>;
 };
 
 const RequireAuth = ({ isSignedIn, children }) => {
